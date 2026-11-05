@@ -8,6 +8,8 @@ import json
 import os
 import re
 import sys
+import time
+import urllib.error
 import urllib.parse
 import urllib.request
 
@@ -16,9 +18,19 @@ UA = {'User-Agent': 'KTOWN-asset-fetch/1.0 (https://github.com/azeembukharipriva
 FREE = re.compile(r'^(cc0|cc-zero|public domain|pd\b|pd-)', re.I)
 
 
-def get(url):
-    with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=120) as r:
-        return r.read()
+def get(url, tries=6):
+    # Wikimedia asks bots to go gently: wait between requests, and longer when told "too many requests".
+    for attempt in range(tries):
+        time.sleep(1.5)
+        try:
+            with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=120) as r:
+                return r.read()
+        except urllib.error.HTTPError as e:
+            if e.code != 429 or attempt == tries - 1:
+                raise
+            wait = int(e.headers.get('Retry-After') or 0) or 15 * (attempt + 1)
+            print('  asked to wait', wait, 's')
+            time.sleep(wait)
 
 
 def api(**params):
