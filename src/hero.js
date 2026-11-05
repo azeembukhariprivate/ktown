@@ -82,12 +82,15 @@ export class Hero {
       return mesh;
     };
 
+    const under = mat(PAL.dress, { roughness: 0.9 });
     // Legs, from the hips, each ending in a white shoe with a strap.
     this.legs = [-1, 1].map(s => {
       const hip = new THREE.Group();
       hip.position.set(s * 0.055, 0.5, 0);
       this.body.add(hip);
       add(hip, new THREE.CylinderGeometry(0.036, 0.03, 0.46, 10), skin, 0, -0.23, 0);
+      // Short dark shorts under the dress, so no bare leg shows up inside the skirt.
+      add(hip, new THREE.CylinderGeometry(0.052, 0.047, 0.15, 12), under, 0, -0.06, 0);
       const foot = add(hip, new THREE.CapsuleGeometry(0.032, 0.07, 4, 10), shoe, 0, -0.475, 0.025);
       foot.rotation.x = Math.PI / 2;
       foot.scale.set(1.15, 1, 0.8);
@@ -99,10 +102,13 @@ export class Hero {
     const skirtPts = [];
     for (let i = 0; i <= 10; i++) {
       const t = i / 10;
-      skirtPts.push(new THREE.Vector2(0.095 + 0.13 * Math.pow(t, 1.3) + Math.sin(t * Math.PI) * 0.01, 0.7 - t * 0.29));
+      skirtPts.push(new THREE.Vector2(0.095 + 0.13 * Math.pow(t, 1.3) + Math.sin(t * Math.PI) * 0.01, 0.7 - t * 0.32));
     }
-    skirtCloth.side = THREE.DoubleSide;
+    // Points from the hem up, so the outside of the shape is the outside of the skirt.
+    skirtPts.reverse();
     this.skirt = add(this.body, new THREE.LatheGeometry(skirtPts, 28), skirtCloth);
+    // The inside of the skirt: plain dark cloth.
+    this.skirt.add(new THREE.Mesh(new THREE.LatheGeometry(skirtPts, 28), new THREE.MeshStandardMaterial({ color: '#0f0e11', roughness: 1, side: THREE.BackSide })));
     add(this.body, new THREE.CylinderGeometry(0.098, 0.096, 0.2, 20), dress, 0, 0.79, 0);
     add(this.body, new THREE.SphereGeometry(0.1, 20, 10, 0, Math.PI * 2, 0, Math.PI / 2), dress, 0, 0.885, 0).scale.set(1.05, 0.35, 0.8);
     add(this.body, new THREE.CylinderGeometry(0.03, 0.034, 0.06, 12), skin, 0, 0.92, 0);
