@@ -64,20 +64,20 @@ try {
     await shot(pc, '01-title');
   });
 
-  await step('Enter starts the game, by the zebra crossing', async () => {
+  await step('Enter starts the game at her home on Pond Lane, her bicycle beside her', async () => {
     await pc.keyboard.press('Enter');
     await wait(1000);
     const s = await state();
     assert.equal(s.screen, 'play');
-    assert.equal(s.area, 'Kavala Junction');
-    await shot(pc, '02-start');
+    assert.equal(s.area, 'Pond Lane');
+    await shot(pc, '02-home');
   });
 
-  await step('she walks where the camera looks, and runs with Shift', async () => {
+  await step('she walks where the camera looks (out of her gate), and runs with Shift', async () => {
     const a = await state();
-    const b = await holdUntil(pc, ['KeyW'], s => a.z - s.z > 1.5);
-    assert.ok(a.z - b.z > 1.5, `walked forward from z ${a.z.toFixed(2)} to ${b.z.toFixed(2)}`);
-    assert.ok(Math.abs(b.x - a.x) < 0.5, 'straight ahead');
+    const b = await holdUntil(pc, ['KeyW'], s => Math.hypot(s.x - a.x, s.z - a.z) > 1.5);
+    assert.ok(a.x - b.x > 1.4, `walked forward, towards her gate (west): x ${a.x.toFixed(2)} to ${b.x.toFixed(2)}`);
+    assert.ok(Math.abs(b.z - a.z) < 0.5, 'straight ahead');
     await pc.evaluate(() => ktown.teleport(-10, 5, Math.PI / 2));
     await pc.keyboard.down('ShiftLeft');
     const r = await holdUntil(pc, ['KeyW'], s => s.state === 'run' && s.face === 'excited');
@@ -112,43 +112,82 @@ try {
     await shot(pc, '04-shops');
   });
 
+  await step('she gets on her bicycle with E, rides it, and gets off again', async () => {
+    await pc.evaluate(() => { const b = ktown.game.plan.bike; ktown.teleport(b.x - 1.0, b.z, Math.PI / 2); });
+    await pc.waitForFunction(() => ktown.state().prompt === 'Get on your bicycle', null, { timeout: 60000 });
+    assert.ok(await pc.isVisible('text=Get on your bicycle'), 'the prompt shows');
+    await pc.keyboard.press('KeyE');
+    await pc.waitForFunction(() => ktown.state().mode === 'bike', null, { timeout: 60000 });
+    // Ride out of the gate and along Pond Lane.
+    await pc.evaluate(() => { const g = ktown.game; g.bike.x = -26; g.bike.z = 20; g.bike.heading = 0; g.yaw = Math.PI; });
+    await pc.keyboard.down('ShiftLeft');
+    const r = await holdUntil(pc, ['KeyW'], s => s.speed > 5, 40000);
+    await pc.keyboard.up('ShiftLeft');
+    assert.ok(r.speed > 5, `riding at ${r.speed.toFixed(1)} m/s`);
+    await pc.keyboard.press('KeyB');
+    await shot(pc, '05-bicycle');
+    await pc.waitForFunction(() => ktown.state().speed < 1.5, null, { timeout: 60000 });
+    await pc.keyboard.press('KeyE');
+    await pc.waitForFunction(() => ktown.state().mode === 'foot', null, { timeout: 60000 });
+  });
+
+  await step('an autorickshaw from the stand takes her to the market', async () => {
+    await pc.evaluate(() => ktown.teleport(71.5, 5.3, 0));
+    await pc.waitForFunction(() => ktown.state().prompt === 'Take an autorickshaw', null, { timeout: 60000 });
+    await pc.keyboard.press('KeyE');
+    await pc.waitForSelector('.places button', { timeout: 60000 });
+    await shot(pc, '06-where-to');
+    await pc.click('.places button:text-is("The Market")');
+    await pc.waitForFunction(() => ktown.state().mode === 'auto', null, { timeout: 60000 });
+    await wait(3000);
+    await shot(pc, '07-autorickshaw');
+    await pc.waitForFunction(() => ktown.state().mode === 'foot', null, { timeout: 600000, polling: 500 });
+    const s = await state();
+    assert.ok(Math.hypot(s.x - -50, s.z - -4.5) < 9, `dropped near the market (${s.x.toFixed(1)}, ${s.z.toFixed(1)})`);
+  });
+
+  await step('every sound loads', async () => {
+    const n = await pc.evaluate(async () => { await ktown.audio.unlock(); return [Object.keys(ktown.audio.buffers).length, ktown.sounds.length]; });
+    assert.equal(n[0], n[1], `${n[0]} of ${n[1]} sounds`);
+  });
+
   await step('the market, the lanes and her face', async () => {
     await pc.evaluate(() => { ktown.teleport(-52, -4.6, Math.PI); ktown.look(0, 0.35, 5); });
     await pc.waitForFunction(() => ktown.state().area === 'The Market', null, { timeout: 60000 });
     await wait(1500);
-    await shot(pc, '05-market');
+    await shot(pc, '08-market');
     await pc.evaluate(() => { ktown.teleport(20, -40, Math.PI); ktown.look(-0.9, 0.3, 6); });
     await pc.waitForFunction(() => ktown.state().area === 'Temple Road', null, { timeout: 60000 });
     await wait(1500);
-    await shot(pc, '06-temple-road');
+    await shot(pc, '09-temple-road');
     await pc.evaluate(() => { ktown.teleport(11, 4.8, Math.PI); ktown.look(Math.PI, 0.1, 1.6); });
     await wait(2500);
-    await shot(pc, '07-face');
+    await shot(pc, '10-face');
   });
 
   await step('the evening, chosen in the settings', async () => {
     await pc.keyboard.press('KeyP');
     await wait(400);
     assert.equal((await state()).screen, 'paused');
-    await shot(pc, '08-paused');
+    await shot(pc, '11-paused');
     await pc.click('text=Settings');
     await pc.click('button:has-text("Evening")');
     await wait(300);
-    await shot(pc, '09-settings');
+    await shot(pc, '12-settings');
     assert.equal((await state()).time, 'evening');
     await pc.click('button:text-is("Back")');
     await pc.click('text=Carry on');
     await pc.evaluate(() => ktown.look(0.3, 0.3, 4.4));
     await wait(2500);
     assert.equal((await state()).screen, 'play');
-    await shot(pc, '10-evening');
+    await shot(pc, '13-evening');
   });
 
   await step('About shows the credit line', async () => {
     await pc.keyboard.press('KeyP');
     await pc.click('text=About');
     assert.ok(await pc.isVisible('text=Made by Azeem, with Claude and'));
-    await shot(pc, '11-about');
+    await shot(pc, '14-about');
     const s = await state();
     console.log(`\n  (drawing: ${s.calls} draws, ${(s.triangles / 1e6).toFixed(1)} million triangles a frame)`);
   });

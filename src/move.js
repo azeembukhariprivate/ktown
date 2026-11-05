@@ -204,3 +204,59 @@ export function cameraReach(world, roofs, from, dir, want) {
   }
   return want;
 }
+
+export const BIKE = {
+  slow: 4.2, // metres a second, pedalling gently
+  fast: 7.5, // pedalling hard
+  accel: 3.5,
+  brake: 7,
+  turn: 2.4, // how fast she can steer (radians a second at full speed)
+  radius: 0.36,
+  step: 0.22 // the bicycle rolls up small steps (the yard path, a door step) but not onto a shop step
+};
+
+/** Inaara riding her bicycle: it goes where it points, turns gradually, and leans into the turns. */
+export class Bike {
+  constructor(x, z, heading = 0) {
+    this.x = x;
+    this.z = z;
+    this.y = 0;
+    this.heading = heading;
+    this.speed = 0;
+    this.roll = 0; // how far the wheels have turned (radians)
+    this.lean = 0;
+    this.bumped = 10;
+  }
+
+  /** `move` is the wanted direction on the ground (x, z), up to 1 long; `fast` while pedalling hard. */
+  update(dt, world, move, fast = false) {
+    const len = Math.min(1, Math.hypot(move.x, move.z));
+    let target = 0, steer = 0;
+    if (len > 0.1) {
+      let d = Math.atan2(move.x, move.z) - this.heading;
+      d = Math.atan2(Math.sin(d), Math.cos(d));
+      if (Math.abs(d) > 2.3 && this.speed > 0.5) target = 0; // asked to go back the other way: brake first
+      else {
+        target = (fast ? BIKE.fast : BIKE.slow) * len * (1 - Math.min(0.6, Math.abs(d) / 3));
+        const rate = BIKE.turn * Math.min(1, 0.35 + this.speed / 3);
+        steer = Math.max(-rate, Math.min(rate, d * 3));
+      }
+    }
+    this.speed += Math.max(-BIKE.brake * dt, Math.min(BIKE.accel * dt, target - this.speed));
+    this.heading += steer * dt;
+    const want = { x: this.x + Math.sin(this.heading) * this.speed * dt, z: this.z + Math.cos(this.heading) * this.speed * dt };
+    const [nx, nz] = world.pushOut(want.x, want.z, BIKE.radius, this.y + BIKE.step);
+    const moved = Math.hypot(nx - this.x, nz - this.z), wanted = this.speed * dt;
+    if (wanted > 0.02 && moved < wanted * 0.5) {
+      // Ran into something: stop (only a bump, nothing more).
+      this.speed *= 0.3;
+      this.bumped = 0;
+    } else this.bumped += dt;
+    this.x = nx;
+    this.z = nz;
+    this.y = world.groundAt(this.x, this.z, this.y + BIKE.step);
+    this.roll += (moved / 0.25);
+    const wantLean = Math.max(-0.35, Math.min(0.35, steer * this.speed * 0.05));
+    this.lean += (wantLean - this.lean) * Math.min(1, dt * 5);
+  }
+}

@@ -210,6 +210,249 @@
   "licence": "CC0",
   "sha256": "a215eace3cf4f2823e93e551a4220a0db89c9d3541ce83193094f7978068f533"
  },
+ "assets/sounds/bell.mp3": {
+  "from": "https://commons.wikimedia.org/wiki/File%3ARotating-bicycle-bell.wav",
+  "name": "Rotating-bicycle-bell.wav",
+  "by": [
+   "AntumDeluge"
+  ],
+  "licence": "CC0",
+  "sha256": "65e2f0905486609beb5485f9ac15929182addcf8bb6783d0ad66a7a567002173"
+ },
+ "assets/sounds/birds.mp3": {
+  "from": "https://commons.wikimedia.org/wiki/File%3A20200119_083339_chestnut_hd_beeeater.ogg",
+  "name": "20200119 083339 chestnut hd beeeater.ogg",
+  "by": [
+   "Shyamal"
+  ],
+  "licence": "CC0",
+  "sha256": "50f81631bea368b5cca9997b76aca164bd7980371715cc3cbec2a45c5616c00f"
+ },
+ "assets/sounds/bulbul.mp3": {
+  "from": "https://commons.wikimedia.org/wiki/File%3ARedvented_Bulbul.ogg",
+  "name": "Redvented Bulbul.ogg",
+  "by": [
+   "Gypsypkd"
+  ],
+  "licence": "Public domain",
+  "sha256": "caf7df96669e344e9d5cde23e12a6f6ad02726ddf4e8b9c26ce363d26a4da72f"
+ },
+ "assets/sounds/children.mp3": {
+  "from": "https://commons.wikimedia.org/wiki/File%3ADouzen_kids_on_playground.ogg",
+  "name": "Douzen kids on playground.ogg",
+  "by": [
+   "stephan"
+  ],
+  "licence": "Public domain",
+  "sha256": "27649f5abafa326344b6c71fdfc80144db266ab1d7f7cc30c78d95557a61a623"
+ },
+ "assets/sounds/cicadas.mp3": {
+  "from": "https://commons.wikimedia.org/wiki/File%3ACicada_20200619.wav",
+  "name": "Cicada 20200619.wav",
+  "by": [
+   "Shyamal"
+  ],
+  "licence": "CC0",
+  "sha256": "b5c7f12dca1772c66e72518adb9ada8e04907590f9808663b83b070ab6c1a114"
+ },
+ "assets/sounds/crickets.mp3": {
+  "from": "https://commons.wikimedia.org/wiki/File%3ACountry_night_noise.ogg",
+  "name": "Country night noise.ogg",
+  "by": [
+   "hc"
+  ],
+  "licence": "Public domain",
+  "sha256": "d63778a13d81ecc70e4833bf958cc95c141009b5d377fe97fea31bd9cfc33812"
+ },
+ "assets/sounds/crow.mp3": {
+  "from": "https://commons.wikimedia.org/wiki/File%3ACorvus_cornix.ogg",
+  "name": "Corvus cornix.ogg",
+  "by": [
+   "Oona R\u00e4is\u00e4nen (Mysid)"
+  ],
+  "licence": "Public domain",
+  "sha256": "72c654e058cb4063897723c42e7ac5f8d8b97a2a5a26857aea37bd54af98a4d5"
+ },
+ "assets/sounds/engine-car.mp3": {
+  "from": "https://commons.wikimedia.org/wiki/File%3AStarting_a_car_and_driving.ogg",
+  "name": "Starting a car and driving.ogg",
+  "by": [
+   "stephan"
+  ],
+  "licence": "Public domain",
+  "sha256": "9929c2005f00fbabbc815dc9f460eaea8061d6eb30096cc04f57345095c5faf6"
+ },
+ "assets/sounds/engine-diesel.mp3": {
+  "from": "https://commons.wikimedia.org/wiki/File%3ADetroit62.ogg",
+  "name": "Detroit62.ogg",
+  "by": [
+   "Sixthstar (talk)"
+  ],
+  "licence": "CC0",
+  "sha256": "e05da308deff1c1a68b4f7b5a0a51a4e5e7167d92662b9373b6e436e8922f20c"
+ },
+ "assets/sounds/engine-small.mp3": {
+  "from": "https://commons.wikimedia.org/wiki/File%3AUSSR_bicycle_2T_engine_D-4.wav",
+  "name": "USSR bicycle 2T engine D-4.wav",
+  "by": [
+   "\u0412\u0456\u043a\u0442\u043e\u0440 \u0425\u043e\u0434\u0454\u0454\u0432 /Viktor Khodyeyev"
+  ],
+  "licence": "Public domain",
+  "sha256": "29eaaa385f043f694571087fa68b9abba24b7bf1293c73760fa543084af9bafe"
+ },
+ "assets/sounds/frogs.mp3": {
+  "from": "https://commons.wikimedia.org/wiki/File%3APseudacris_triseriata_chorus.wav",
+  "name": "Pseudacris triseriata chorus.wav",
+  "by": [
+   "Dawn VanDeman"
+  ],
+  "licence": "CC0",
+  "sha256": "fdabf5121de74edc370dc7e7d41a7663d46a780b7e312e392106348986e2e624"
+ },
+ "assets/sounds/glass.mp3": {
+  "from": "https://commons.wikimedia.org/wiki/File%3AGLASS_BELL_TAPPING_SOUND.wav",
+  "name": "GLASS BELL TAPPING SOUND.wav",
+  "by": [
+   "Muldoonsamuel55"
+  ],
+  "licence": "CC0",
+  "sha256": "e9a7a70be99da25593ba87b1175db201b2bed71462a794a9a6cb89d2f38cd77b"
+ },
+ "assets/sounds/horn.mp3": {
+  "from": "https://commons.wikimedia.org/wiki/File%3ACar_Horn.wav",
+  "name": "Car Horn.wav",
+  "by": [
+   "15HPanska_Ruttner_Jan"
+  ],
+  "licence": "CC0",
+  "sha256": "42fa8a355791cd6bd3b746db42dbc1c2a05813d6bb0c29b43216f65caee2d0ef"
+ },
+ "assets/sounds/market.mp3": {
+  "from": "https://commons.wikimedia.org/wiki/File%3AMarket_activities_record.ogg",
+  "name": "Market activities record.ogg",
+  "by": [
+   "Aishatu98"
+  ],
+  "licence": "CC0",
+  "sha256": "0f0d7d52aed5fa59dbc6e0b5adb0131751be7392c0c2d64cdd2b7f778ef8ee1d"
+ },
+ "assets/sounds/nightjar.mp3": {
+  "from": "https://commons.wikimedia.org/wiki/File%3AGreat_Eared_Nighjar_from_Vazhachal%2C_Kerala.ogg",
+  "name": "Great Eared Nighjar from Vazhachal, Kerala.ogg",
+  "by": [
+   "Raghu.kuttan"
+  ],
+  "licence": "Public domain",
+  "sha256": "c5867cc9beb0758b9e6303366895fa132b3044f14d43bb621d3d91b6411fe09d"
+ },
+ "assets/sounds/parakeets.mp3": {
+  "from": "https://commons.wikimedia.org/wiki/File%3AHalsbandsittich.ogg",
+  "name": "Halsbandsittich.ogg",
+  "by": [
+   "an unnamed Wikimedia Commons contributor"
+  ],
+  "licence": "CC0",
+  "sha256": "4f4fabddd5d55c099266f8fdcfc7dcae5d591e6799937ad76a2ff78d4cf5983e"
+ },
+ "assets/sounds/rooster.mp3": {
+  "from": "https://commons.wikimedia.org/wiki/File%3AMedium_rooster_crowing.ogg",
+  "name": "Medium rooster crowing.ogg",
+  "by": [
+   "alys"
+  ],
+  "licence": "Public domain",
+  "sha256": "266abdaebca0daba5d7890bbb70c7eb617bc49551dc19eba8ba11092c3fac6b5"
+ },
+ "assets/sounds/sparrows.mp3": {
+  "from": "https://commons.wikimedia.org/wiki/File%3AHouse_Sparrow_202279702.wav",
+  "name": "House Sparrow 202279702.wav",
+  "by": [
+   "*ngoomie"
+  ],
+  "licence": "CC0",
+  "sha256": "5d0a5eec7c4fa2b6b77dea6e5e383c7d7ffae839b40017ad6658577605f2f075"
+ },
+ "assets/sounds/step-1.mp3": {
+  "from": "https://commons.wikimedia.org/wiki/File%3AForest_track_3.ogg",
+  "name": "Forest track 3.ogg",
+  "by": [
+   "tball74"
+  ],
+  "licence": "Public domain",
+  "sha256": "f98a7b00a9d5f98c80c8d424fc300679d8660a17850e3402b9e0a5dd7fa6732b"
+ },
+ "assets/sounds/step-2.mp3": {
+  "from": "https://commons.wikimedia.org/wiki/File%3AForest_track_3.ogg",
+  "name": "Forest track 3.ogg",
+  "by": [
+   "tball74"
+  ],
+  "licence": "Public domain",
+  "sha256": "64a1c9dab7a6e079aab662d9890353d559d423c9543995923278603170e70fbb"
+ },
+ "assets/sounds/step-3.mp3": {
+  "from": "https://commons.wikimedia.org/wiki/File%3AForest_track_3.ogg",
+  "name": "Forest track 3.ogg",
+  "by": [
+   "tball74"
+  ],
+  "licence": "Public domain",
+  "sha256": "b065d749708d3c5dceb80f632eeda753721867ece5827e71af5badbe6542e867"
+ },
+ "assets/sounds/step-4.mp3": {
+  "from": "https://commons.wikimedia.org/wiki/File%3AForest_track_3.ogg",
+  "name": "Forest track 3.ogg",
+  "by": [
+   "tball74"
+  ],
+  "licence": "Public domain",
+  "sha256": "e05d02f7ed0e129eb6a097313f9c83f44798fabfded37ecc27c3bd6701425004"
+ },
+ "assets/sounds/step-5.mp3": {
+  "from": "https://commons.wikimedia.org/wiki/File%3AForest_track_3.ogg",
+  "name": "Forest track 3.ogg",
+  "by": [
+   "tball74"
+  ],
+  "licence": "Public domain",
+  "sha256": "eecb24b6017d7fa8f8ae1a505543c66633dd159625503fab8e469ffb34b2cfa9"
+ },
+ "assets/sounds/step-6.mp3": {
+  "from": "https://commons.wikimedia.org/wiki/File%3AForest_track_3.ogg",
+  "name": "Forest track 3.ogg",
+  "by": [
+   "tball74"
+  ],
+  "licence": "Public domain",
+  "sha256": "dac8fcd4f53bc52a1e7e9a1413b10acb46fa8d24493d7e93d8a8ffb72bfaf286"
+ },
+ "assets/sounds/street.mp3": {
+  "from": "https://commons.wikimedia.org/wiki/File%3ASunday_in_the_city_street_noise1.ogg",
+  "name": "Sunday in the city street noise1.ogg",
+  "by": [
+   "cori"
+  ],
+  "licence": "Public domain",
+  "sha256": "b403be12d652c241713286eb99a96aaaa6063ea5477803995ad7e784901a8116"
+ },
+ "assets/sounds/tea-pour.mp3": {
+  "from": "https://commons.wikimedia.org/wiki/File%3APouring_iced_tea.ogg",
+  "name": "Pouring iced tea.ogg",
+  "by": [
+   "chocoholic"
+  ],
+  "licence": "Public domain",
+  "sha256": "ff668d5f4b1244ba07435ef51dde21c203785dd27809271b3f533db107e6ea7f"
+ },
+ "assets/sounds/thud.mp3": {
+  "from": "https://commons.wikimedia.org/wiki/File%3ADull_thud.ogg",
+  "name": "Dull thud.ogg",
+  "by": [
+   "gregoryweir"
+  ],
+  "licence": "Public domain",
+  "sha256": "be9f5811572a081131614286190e999dfdabd492226a91dbea912ccac5da8abd"
+ },
  "assets/textures/brick/arm.jpg": {
   "from": "https://polyhaven.com/a/castle_brick_02_red",
   "name": "Castle Brick 02 Red",

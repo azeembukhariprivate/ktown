@@ -2,7 +2,7 @@
 // the thumb stick and the buttons. Plain web page parts, drawn crisp at any size.
 
 export const ACCENT = '#ff9f1c'; // marigold, as in INAARA
-export const VERSION = '0.1.0';
+export const VERSION = '0.2.0';
 
 const h = (tag, attrs = {}, ...kids) => {
   const el = document.createElement(tag);
@@ -74,9 +74,18 @@ export class UI {
 
   hud(touch) {
     this.hideAll();
+    this.touch = touch;
     const pause = h('button', { class: 'pause-btn', 'aria-label': 'Pause', on: { click: () => this.fire('pause') } }, '❚❚');
     this.toastEl = h('div', { class: 'toast' });
-    const kids = [pause, this.toastEl];
+    // What she can do here: a prompt (with its key on a computer, a button on a phone).
+    this.promptEl = h('button', { class: 'prompt', on: { click: e => { e.stopPropagation(); this.fire('action'); } } });
+    this.promptEl.addEventListener('touchstart', e => { e.preventDefault(); e.stopPropagation(); this.fire('action'); }, { passive: false });
+    this.bellEl = h('button', { class: 'bell-btn', 'aria-label': 'Ring the bell' }, '🔔');
+    this.bellEl.addEventListener('touchstart', e => { e.preventDefault(); e.stopPropagation(); this.fire('bell'); }, { passive: false });
+    this.bellEl.addEventListener('click', e => { e.stopPropagation(); this.fire('bell'); });
+    const kids = [pause, this.toastEl, this.promptEl, this.bellEl];
+    this.prompt(null);
+    this.riding(false);
     if (touch) {
       this.stickBase = h('div', { class: 'stick-base' }, this.stickKnob = h('div', { class: 'stick-knob' }));
       const jump = h('button', { class: 'jump-btn', 'aria-label': 'Jump' }, 'Jump');
@@ -107,6 +116,39 @@ export class UI {
     this.stickBase.style.top = s.y0 + 'px';
     const dx = Math.max(-R, Math.min(R, s.x - s.x0)), dy = Math.max(-R, Math.min(R, s.y - s.y0));
     this.stickKnob.style.transform = `translate(${dx}px, ${dy}px)`;
+  }
+
+  prompt(p) {
+    if (!this.promptEl) return;
+    this.promptEl.style.display = p ? '' : 'none';
+    this.promptEl.replaceChildren(...(p ? [this.touch ? '' : h('span', { class: 'key' }, 'E'), p.text] : []));
+  }
+
+  /** On the bicycle there's a bell to ring (B on a keyboard). */
+  riding(on) {
+    if (this.bellEl) this.bellEl.style.display = on && this.touch ? '' : 'none';
+  }
+
+  /** The list of places an autorickshaw can take her. `done(place)`; null if she changes her mind. */
+  places(list, done) {
+    let finished = false;
+    const finish = place => {
+      if (finished) return;
+      finished = true;
+      el.remove();
+      delete this.screens.places;
+      done(place);
+    };
+    const el = h('div', { class: 'screen card-screen' }, h('div', { class: 'card' },
+      h('h2', {}, 'Where to?'),
+      h('p', { class: 'small' }, 'The driver will take you there. You can get off on the way too.'),
+      h('div', { class: 'buttons places' }, ...list.map(p => h('button', { on: { click: () => finish(p) } }, p.name))),
+      h('button', { class: 'main', on: { click: () => finish(null) } }, 'Not now')));
+    this.screens.places = el;
+    this.root.append(el);
+    const first = el.querySelector('.places button');
+    if (first) first.focus();
+    return () => finish(null);
   }
 
   toast(text, secs = 2.6) {
@@ -161,6 +203,8 @@ export class UI {
             h('li', {}, h('b', {}, 'W A S D'), ' or the arrow keys: walk'),
             h('li', {}, 'Hold ', h('b', {}, 'Shift'), ': run'),
             h('li', {}, h('b', {}, 'Space'), ': jump'),
+            h('li', {}, h('b', {}, 'E'), ': get on or off your bicycle, take an autorickshaw (when it says so)'),
+            h('li', {}, h('b', {}, 'B'), ': ring the bicycle bell'),
             h('li', {}, 'Click, then move the ', h('b', {}, 'mouse'), ': look around (Esc gives the mouse back)'),
             h('li', {}, h('b', {}, 'Mouse wheel'), ': camera nearer or further'),
             h('li', {}, h('b', {}, 'P'), ': pause'))),
@@ -168,10 +212,12 @@ export class UI {
           h('ul', {},
             h('li', {}, 'Left thumb on the left side: walk. Push it all the way to run.'),
             h('li', {}, 'Drag on the right side: look around.'),
-            h('li', {}, h('b', {}, 'Jump'), ' button: jump.')),
+            h('li', {}, h('b', {}, 'Jump'), ' button: jump.'),
+            h('li', {}, 'The button at the bottom does what it says: get on your bicycle, take an autorickshaw...'),
+            h('li', {}, '🔔 rings the bicycle bell.')),
           h('h3', {}, 'Game controller'),
-          h('ul', {}, h('li', {}, 'Left stick to walk, right stick to look, A to jump, right trigger to run.')))),
-      h('p', { class: 'small' }, 'This is the first part of KTOWN: walk around the junction, the shops, the market and the lanes. Bicycles, the autorickshaw and jobs to do come next.'));
+          h('ul', {}, h('li', {}, 'Left stick to walk, right stick to look, A to jump, right trigger to run, Y for the prompt, X for the bell.')))),
+      h('p', { class: 'small' }, 'Your bicycle waits in your yard on Pond Lane: ride it anywhere, and leave it where you like (a marker shows where). Autorickshaws wait at the stand past the shops, or wave one down on the road: pick a place and the driver takes you there. Jobs to do in the town come next.'));
   }
 
   settings(save, apply) {
@@ -189,8 +235,12 @@ export class UI {
       choice('Time of day', 'time', [['day', 'Day'], ['evening', 'Evening']]),
       choice('Picture', 'quality', [['auto', 'Automatic'], ['high', 'Best'], ['low', 'Faster']]),
       h('div', { class: 'setting' }, h('span', {}, 'Camera speed'), slider),
-      choice('Camera up and down', 'invertY', [[false, 'Normal'], [true, 'Upside down']])
+      choice('Camera up and down', 'invertY', [[false, 'Normal'], [true, 'Upside down']]),
+      choice('Sound', 'sound', [[true, 'On'], [false, 'Off']])
     ];
+    const vol = h('input', { type: 'range', min: '0', max: '1', step: '0.05', value: String(s.volume ?? 0.8), 'aria-label': 'Loudness' });
+    vol.addEventListener('input', () => { s.volume = Number(vol.value); apply('volume'); });
+    kids.push(h('div', { class: 'setting' }, h('span', {}, 'Loudness'), vol));
     if (this.fullscreen && this.fullscreen.available) kids.push(h('div', { class: 'setting' }, h('span', {}, 'Full screen'),
       h('div', { class: 'choices' }, h('button', { on: { click: () => this.fullscreen.toggle() } }, 'On / off'))));
     kids.push(h('p', { class: 'small' }, 'A change of picture setting takes effect the next time the game opens.'));

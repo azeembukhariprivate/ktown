@@ -79,3 +79,19 @@ test('the camera comes closer instead of going into a house', () => {
   assert.ok(d < 3, `came in to ${d}`);
   assert.equal(cameraReach(world, roofs, { x: 0, y: 1, z: 0 }, { x: 0, y: 0.2, z: -1 }, 6), 6);
 });
+
+test('on her bicycle she rides faster than she runs, steers round gradually, and stops at walls', async () => {
+  const { Bike, BIKE } = await import('../src/move.js');
+  const world = new World([box(-1, 20, 30, 21, 2)], 200);
+  const b = new Bike(0, 0, 0);
+  let top = 0;
+  for (let t = 0; t < 6; t += 1 / 60) {
+    b.update(1 / 60, world, { x: 0, z: 1 }, true);
+    top = Math.max(top, b.speed);
+  }
+  assert.ok(top > MOVE.run, `riding at up to ${top.toFixed(1)} m/s`);
+  assert.ok(b.z < 20 - BIKE.radius + 1e-6, 'stopped by the wall');
+  const c = new Bike(0, 0, 0);
+  for (let t = 0; t < 0.25; t += 1 / 60) c.update(1 / 60, new World([]), { x: 1, z: 0 }, false);
+  assert.ok(c.heading > 0 && c.heading < 1.2, 'turns gradually, not on the spot');
+});

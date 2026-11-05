@@ -2,7 +2,7 @@
 
 const KEY = 'ktown-save-v1';
 
-const fresh = () => ({ settings: { time: 'day', quality: 'auto', camSpeed: 1, invertY: false }, seenHelp: false });
+const fresh = () => ({ settings: { time: 'day', quality: 'auto', camSpeed: 1, invertY: false, sound: true, volume: 0.8 }, seenHelp: false });
 
 export function load() {
   try {

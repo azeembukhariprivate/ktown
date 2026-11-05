@@ -27,15 +27,16 @@ test('the version is the same everywhere', () => {
   assert.match(read('src/ui.js'), new RegExp(`export const VERSION = '${version.replace(/\./g, '\\.')}'`));
 });
 
-test('every texture, sky and model is the recorded free (CC0) file, with its makers named', () => {
+test('every texture, sky, model and sound is the recorded free file, with its makers named', () => {
   const sources = JSON.parse(read('assets/SOURCES.json'));
-  const files = [...walk('assets/textures'), ...walk('assets/sky'), ...walk('assets/models')];
+  const files = [...walk('assets/textures'), ...walk('assets/sky'), ...walk('assets/models'), ...walk('assets/sounds')];
   assert.deepEqual(files.sort(), Object.keys(sources).sort());
   const notices = read('THIRD-PARTY-NOTICES.txt');
   for (const [f, s] of Object.entries(sources)) {
     assert.equal(createHash('sha256').update(readFileSync(join(root, f))).digest('hex'), s.sha256, `${f} is unchanged`);
-    assert.equal(s.licence, 'CC0');
-    assert.match(s.from, /^https:\/\/polyhaven\.com\/a\//);
+    // Free for anything: CC0 or public domain, from Poly Haven (pictures, models) or Wikimedia Commons (sounds).
+    assert.ok(['CC0', 'Public domain'].includes(s.licence), `${f}: ${s.licence}`);
+    assert.match(s.from, f.startsWith('assets/sounds/') ? /^https:\/\/commons\.wikimedia\.org\/wiki\/File(:|%3A)/ : /^https:\/\/polyhaven\.com\/a\//);
     assert.ok(notices.includes(s.name), `${s.name} is in THIRD-PARTY-NOTICES.txt`);
   }
 });

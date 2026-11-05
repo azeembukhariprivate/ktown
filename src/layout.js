@@ -48,7 +48,7 @@ export function buildTown() {
     ground: [], // {type, x0, z0, x1, z1}: road, laterite, paving, sand, yard path
     solids: [], // what she bumps into or stands on
     camera: [], // things only the camera keeps out of (roofs and awnings over places she can walk)
-    houses: [], shops: [], stalls: [], teaShop: null, busStop: null,
+    houses: [], shops: [], stalls: [], teaShop: null, busStop: null, home: null, bike: null, stand: null, places: [],
     palms: [], bananas: [], bushes: [], poles: [], props: [],
     routes: [], idlers: [], areas: [],
     start: { x: 11, z: 4.8, heading: Math.PI } // on the road side by the zebra crossing, looking at the shops
@@ -100,6 +100,13 @@ export function buildTown() {
     T.idlers.push({ x: 35, z: -12.0, y: 0, heading: 0, kind: 'shopkeeper' },
       { x: 31.6, z: -8.15, y: 0.45, heading: Math.PI, kind: 'sitting' }, { x: 38.2, z: -8.15, y: 0.45, heading: Math.PI, kind: 'sitting' },
       { x: 33.2, z: -7.2, y: 0, heading: Math.PI / 2, kind: 'chatting' });
+  }
+
+  // The autorickshaw stand, east of the shops on the south side: three autos wait there for a fare.
+  {
+    const rc = reserve(ground('paving', rect(64.5, 6.4, 79.5, 10.6)));
+    const spots = [66.5, 71.5, 76.5].map(x => ({ x, z: 8.4, heading: -Math.PI / 2 }));
+    T.stand = { ...rc, spots };
   }
 
   // The bus stop across from the shops.
@@ -170,6 +177,9 @@ export function buildTown() {
     plot(x, -6.8, x + 16, -22, 'south'); // main road, north side
   }
 
+  // Inaara's home: the second house on the east side of Pond Lane.
+  const home = plots.find(p => p.x0 === -23.4 && p.z0 === 24) || plots.find(p => p.facing === 'west' && p.x0 === -23.4);
+  if (home) home.home = true;
   for (const p of plots) addHouse(T, p, r);
 
   // Coconut groves where there are no houses, and palms around the edge so the town feels bigger than it is.
@@ -188,6 +198,14 @@ export function buildTown() {
 
   // People walking along the road sides and lanes, back and forth.
   T.routes.push({ pts: [[-98, -5.0], [98, -5.0]], who: 5 }, { pts: [[-98, 5.0], [98, 5.0]], who: 5 });
+  // Someone now and then crossing the road at the zebra crossing (traffic stops for them).
+  T.routes.push({ pts: [[7.1, -5.6], [7.1, 5.6]], who: 1, crossing: true });
+
+  // Where an autorickshaw can take her (a point beside the road or lane).
+  const g = T.home.gate;
+  T.places.push({ name: 'Home', x: g[0], z: g[1] },
+    { name: 'Kavala Junction', x: 12, z: 4.8 }, { name: 'The Market', x: -50, z: -4.5 },
+    { name: 'Temple Road', x: 20, z: -70 }, { name: 'Pond Lane', x: -24, z: 64 }, { name: 'School Lane', x: -40, z: -48 });
   T.routes.push({ pts: [[20.0, -7.5], [20.0, -98]], who: 3 }, { pts: [[28.0, -9], [28.0, -98]], who: 2 });
   T.routes.push({ pts: [[-26, 7.5], [-26, 98]], who: 3 }, { pts: [[-70, -50], [17.4, -50]], who: 3 });
   return T;
@@ -211,7 +229,8 @@ function addHouse(T, p, r) {
   hw = Math.min(hw, width / 2 - 1.6);
   if (hd < 2.8 || hw < 3.2) return;
   const offset = (r() - 0.5) * Math.max(0, width - 2 * hw - 4);
-  const storeys = r() < 0.3 ? 2 : 1;
+  let storeys = r() < 0.3 ? 2 : 1;
+  if (p.home) storeys = 1;
   const house = {
     facing: p.facing, x: 0, z: 0, w: 2 * hw, d: 2 * hd, sit, storeys,
     colour: HOUSE_COLOURS[(r() * HOUSE_COLOURS.length) | 0], old: r() < 0.25, roof: r() < 0.3 ? 'roof-old' : 'roof',
@@ -224,6 +243,16 @@ function addHouse(T, p, r) {
   const [sx, sz] = at(offset, setback + sit / 2);
   house.sitX = sx;
   house.sitZ = sz;
+  if (p.home) {
+    // Her home: a cheerful pale yellow house with a new tiled roof.
+    Object.assign(house, { home: true, colour: '#f6e3a1', old: false, roof: 'roof' });
+    T.home = house;
+    const [bx, bz] = at(offset + 2.2, setback - 1.5);
+    const rot0 = Math.atan2(fx, fz);
+    T.bike = { x: bx, z: bz, heading: rot0 + Math.PI / 2 };
+    const [stx, stz] = at(offset, setback - 2.6);
+    T.start = { x: stx, z: stz, heading: rot0 }; // on the path in her yard, facing the gate and the lane
+  }
   T.houses.push(house);
   const H = storeys === 2 ? 6.2 : 3.2;
   T.solids.push(box(rectUV(offset - hw, vWall0, offset + hw, vWall1), H + 2, { what: 'house' }));
@@ -259,6 +288,7 @@ function addHouse(T, p, r) {
     if (!clear(u, v)) continue;
     const [x, z] = at(u, v);
     if (T.palms.some(q => Math.hypot(q.x - x, q.z - z) < 3.2)) continue;
+    if (T.bike && p.home && Math.hypot(T.bike.x - x, T.bike.z - z) < 2.5) continue;
     T.palms.push({ x, z, h: 7 + r() * 5, lean: (r() - 0.5) * 0.4, dir: r() * 6.28, kind: (r() * 4) | 0 });
     n++;
   }
@@ -278,8 +308,22 @@ function addHouse(T, p, r) {
     const [x, z] = at(offset + hw - 1.0, setback + sit / 2);
     T.props.push({ model: 'plastic_monobloc_chair_01', x, z, y: 0.42, rot: rot + Math.PI + (r() - 0.5) * 0.6 });
   }
-  if (r() < 0.5) T.idlers.push({ x: sx + along[0] * (hw - 2), z: sz + along[1] * (hw - 2), y: 0.42, heading: rot, kind: 'waiting' });
+  if (r() < 0.5 && !p.home) T.idlers.push({ x: sx + along[0] * (hw - 2), z: sz + along[1] * (hw - 2), y: 0.42, heading: rot, kind: 'waiting' });
 }
 
 /** Ground kinds, for the tests and the map: which ones are drawn on top of which. */
 export const GROUND_ORDER = ['sand', 'paving', 'laterite', 'yardpath', 'road'];
+
+/** What the ground is at (x, z): the top patch there, or grass. For footsteps and the tests. */
+export function groundAt(T, x, z) {
+  let best = 'grass', rank = -1;
+  for (const g of T.ground) {
+    if (x < g.x0 || x > g.x1 || z < g.z0 || z > g.z1) continue;
+    const k = GROUND_ORDER.indexOf(g.type);
+    if (k > rank) {
+      rank = k;
+      best = g.type;
+    }
+  }
+  return best;
+}

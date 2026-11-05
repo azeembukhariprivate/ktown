@@ -9,112 +9,165 @@ Fredoka font (assets/fonts/Fredoka.ttf)
 Textures, skies and models from Poly Haven (https://polyhaven.com), all CC0 (public domain): free to use for anything.
 Each file's source and SHA-256 is in assets/SOURCES.json. They were made smaller for the game (tools/prepare_assets.py).
 
-Asphalt 02, by Rob Tuytel: https://polyhaven.com/a/asphalt_02
+Asphalt 02, by Rob Tuytel (CC0): https://polyhaven.com/a/asphalt_02
   assets/textures/road/arm.jpg
   assets/textures/road/color.jpg
   assets/textures/road/normal.jpg
-Bananas, by Alexander Shulha: https://polyhaven.com/a/bananas
+Bananas, by Alexander Shulha (CC0): https://polyhaven.com/a/bananas
   assets/models/bananas.glb
-Beige Wall 001, by Dimitrios Savva, Rico Cilliers: https://polyhaven.com/a/beige_wall_001
+Beige Wall 001, by Dimitrios Savva, Rico Cilliers (CC0): https://polyhaven.com/a/beige_wall_001
   assets/textures/plaster/arm.jpg
   assets/textures/plaster/color.jpg
   assets/textures/plaster/normal.jpg
-Blue Plaster Weathered, by Amal Kumar: https://polyhaven.com/a/blue_plaster_weathered
+Blue Plaster Weathered, by Amal Kumar (CC0): https://polyhaven.com/a/blue_plaster_weathered
   assets/textures/plaster-blue/arm.jpg
   assets/textures/plaster-blue/color.jpg
   assets/textures/plaster-blue/normal.jpg
-Brass Pot 01, by Rico Cilliers: https://polyhaven.com/a/brass_pot_01
+Brass Pot 01, by Rico Cilliers (CC0): https://polyhaven.com/a/brass_pot_01
   assets/models/brass_pot_01.glb
-Castle Brick 02 Red, by Rob Tuytel: https://polyhaven.com/a/castle_brick_02_red
+Castle Brick 02 Red, by Rob Tuytel (CC0): https://polyhaven.com/a/castle_brick_02_red
   assets/textures/brick/arm.jpg
   assets/textures/brick/color.jpg
   assets/textures/brick/normal.jpg
-Ceramic Pot, by Aron Łyczek: https://polyhaven.com/a/ceramic_pot
+Ceramic Pot, by Aron Łyczek (CC0): https://polyhaven.com/a/ceramic_pot
   assets/models/ceramic_pot.glb
-Clay Roof Tiles 02, by Amal Kumar: https://polyhaven.com/a/clay_roof_tiles_02
+Clay Roof Tiles 02, by Amal Kumar (CC0): https://polyhaven.com/a/clay_roof_tiles_02
   assets/textures/roof/arm.jpg
   assets/textures/roof/color.jpg
   assets/textures/roof/normal.jpg
-Coast Sand 01, by Rob Tuytel: https://polyhaven.com/a/coast_sand_01
+Coast Sand 01, by Rob Tuytel (CC0): https://polyhaven.com/a/coast_sand_01
   assets/textures/sand/arm.jpg
   assets/textures/sand/color.jpg
   assets/textures/sand/normal.jpg
-Concrete Pavement, by Charlotte Baglioni: https://polyhaven.com/a/concrete_pavement
+Concrete Pavement, by Charlotte Baglioni (CC0): https://polyhaven.com/a/concrete_pavement
   assets/textures/paving/arm.jpg
   assets/textures/paving/color.jpg
   assets/textures/paving/normal.jpg
-Corrugated Iron 02, by Jenelle van Heerden, Sergej Majboroda: https://polyhaven.com/a/corrugated_iron_02
+Corrugated Iron 02, by Jenelle van Heerden, Sergej Majboroda (CC0): https://polyhaven.com/a/corrugated_iron_02
   assets/textures/iron/arm.jpg
   assets/textures/iron/color.jpg
   assets/textures/iron/normal.jpg
-Damaged Plaster, by Amal Kumar: https://polyhaven.com/a/damaged_plaster
+Damaged Plaster, by Amal Kumar (CC0): https://polyhaven.com/a/damaged_plaster
   assets/textures/plaster-old/arm.jpg
   assets/textures/plaster-old/color.jpg
   assets/textures/plaster-old/normal.jpg
-Fern 02, by Rob Tuytel, Rico Cilliers: https://polyhaven.com/a/fern_02
+Fern 02, by Rob Tuytel, Rico Cilliers (CC0): https://polyhaven.com/a/fern_02
   assets/models/fern_02.glb
-Food Ginger 01, by Oliver Harries: https://polyhaven.com/a/food_ginger_01
+Food Ginger 01, by Oliver Harries (CC0): https://polyhaven.com/a/food_ginger_01
   assets/models/food_ginger_01.glb
-Food Lime 01, by Oliver Harries: https://polyhaven.com/a/food_lime_01
+Food Lime 01, by Oliver Harries (CC0): https://polyhaven.com/a/food_lime_01
   assets/models/food_lime_01.glb
-Grass Medium 01, by Rob Tuytel, Rico Cilliers: https://polyhaven.com/a/grass_medium_01
+Grass Medium 01, by Rob Tuytel, Rico Cilliers (CC0): https://polyhaven.com/a/grass_medium_01
   assets/models/grass_medium_01.glb
-Kloofendal 48d Partly Cloudy (Pure Sky), by Greg Zaal, Jarod Guest: https://polyhaven.com/a/kloofendal_48d_partly_cloudy_puresky
+Kloofendal 48d Partly Cloudy (Pure Sky), by Greg Zaal, Jarod Guest (CC0): https://polyhaven.com/a/kloofendal_48d_partly_cloudy_puresky
   assets/sky/day.jpg
-Leafy Grass, by Charlotte Baglioni: https://polyhaven.com/a/leafy_grass
+Leafy Grass, by Charlotte Baglioni (CC0): https://polyhaven.com/a/leafy_grass
   assets/textures/grass/arm.jpg
   assets/textures/grass/color.jpg
   assets/textures/grass/normal.jpg
-Lemon, by Kuutti Siitonen: https://polyhaven.com/a/lemon
+Lemon, by Kuutti Siitonen (CC0): https://polyhaven.com/a/lemon
   assets/models/lemon.glb
-Metal Trash Can, by GurJas Studios: https://polyhaven.com/a/metal_trash_can
+Metal Trash Can, by GurJas Studios (CC0): https://polyhaven.com/a/metal_trash_can
   assets/models/metal_trash_can.glb
-Old Tyre, by MP: https://polyhaven.com/a/old_tyre
+Old Tyre, by MP (CC0): https://polyhaven.com/a/old_tyre
   assets/models/old_tyre.glb
-Painted Wooden Bench, by Kirill Sannikov: https://polyhaven.com/a/painted_wooden_bench
+Painted Wooden Bench, by Kirill Sannikov (CC0): https://polyhaven.com/a/painted_wooden_bench
   assets/models/painted_wooden_bench.glb
-Palm Tree Bark, by Dimitrios Savva, Rico Cilliers: https://polyhaven.com/a/palm_tree_bark
+Palm Tree Bark, by Dimitrios Savva, Rico Cilliers (CC0): https://polyhaven.com/a/palm_tree_bark
   assets/textures/palm/arm.jpg
   assets/textures/palm/color.jpg
   assets/textures/palm/normal.jpg
-Planter Pot Clay, by Amal Kumar: https://polyhaven.com/a/planter_pot_clay
+Planter Pot Clay, by Amal Kumar (CC0): https://polyhaven.com/a/planter_pot_clay
   assets/models/planter_pot_clay.glb
-Plastic Crate 01, by PierreB3D: https://polyhaven.com/a/plastic_crate_01
+Plastic Crate 01, by PierreB3D (CC0): https://polyhaven.com/a/plastic_crate_01
   assets/models/plastic_crate_01.glb
-Plastic Jerrycan, by Ulan Cabanilla: https://polyhaven.com/a/plastic_jerrycan
+Plastic Jerrycan, by Ulan Cabanilla (CC0): https://polyhaven.com/a/plastic_jerrycan
   assets/models/plastic_jerrycan.glb
-Plastic Monobloc Chair 01, by Kuutti Siitonen: https://polyhaven.com/a/plastic_monobloc_chair_01
+Plastic Monobloc Chair 01, by Kuutti Siitonen (CC0): https://polyhaven.com/a/plastic_monobloc_chair_01
   assets/models/plastic_monobloc_chair_01.glb
-Potted Plant 02, by Rico Cilliers: https://polyhaven.com/a/potted_plant_02
+Potted Plant 02, by Rico Cilliers (CC0): https://polyhaven.com/a/potted_plant_02
   assets/models/potted_plant_02.glb
-Qwantani Dusk 2 (Pure Sky), by Greg Zaal, Jarod Guest: https://polyhaven.com/a/qwantani_dusk_2_puresky
+Qwantani Dusk 2 (Pure Sky), by Greg Zaal, Jarod Guest (CC0): https://polyhaven.com/a/qwantani_dusk_2_puresky
   assets/sky/evening.jpg
-Red Laterite Soil Stones, by Amal Kumar: https://polyhaven.com/a/red_laterite_soil_stones
+Red Laterite Soil Stones, by Amal Kumar (CC0): https://polyhaven.com/a/red_laterite_soil_stones
   assets/textures/laterite/arm.jpg
   assets/textures/laterite/color.jpg
   assets/textures/laterite/normal.jpg
-Roof Tiles 14, by Rob Tuytel: https://polyhaven.com/a/roof_tiles_14
+Roof Tiles 14, by Rob Tuytel (CC0): https://polyhaven.com/a/roof_tiles_14
   assets/textures/roof-old/arm.jpg
   assets/textures/roof-old/color.jpg
   assets/textures/roof-old/normal.jpg
-Sweet Potato, by Jan Martens: https://polyhaven.com/a/sweet_potato
+Sweet Potato, by Jan Martens (CC0): https://polyhaven.com/a/sweet_potato
   assets/models/sweet_potato.glb
-Utility Box 01, by James Ray Cock: https://polyhaven.com/a/utility_box_01
+Utility Box 01, by James Ray Cock (CC0): https://polyhaven.com/a/utility_box_01
   assets/models/utility_box_01.glb
-Wicker Basket 01, by Kuutti Siitonen: https://polyhaven.com/a/wicker_basket_01
+Wicker Basket 01, by Kuutti Siitonen (CC0): https://polyhaven.com/a/wicker_basket_01
   assets/models/wicker_basket_01.glb
-Wood Planks, by Amal Kumar: https://polyhaven.com/a/wood_planks
+Wood Planks, by Amal Kumar (CC0): https://polyhaven.com/a/wood_planks
   assets/textures/planks/arm.jpg
   assets/textures/planks/color.jpg
   assets/textures/planks/normal.jpg
-Wood Shutter, by Dimitrios Savva: https://polyhaven.com/a/wood_shutter
+Wood Shutter, by Dimitrios Savva (CC0): https://polyhaven.com/a/wood_shutter
   assets/textures/shutter/arm.jpg
   assets/textures/shutter/color.jpg
   assets/textures/shutter/normal.jpg
-Wooden Crate 01, by James Ray Cock: https://polyhaven.com/a/wooden_crate_01
+Wooden Crate 01, by James Ray Cock (CC0): https://polyhaven.com/a/wooden_crate_01
   assets/models/wooden_crate_01.glb
-Yellow Onion, by Kuutti Siitonen: https://polyhaven.com/a/yellow_onion
+Yellow Onion, by Kuutti Siitonen (CC0): https://polyhaven.com/a/yellow_onion
   assets/models/yellow_onion.glb
 
+Sounds: recordings from Wikimedia Commons (https://commons.wikimedia.org), each public domain or CC0: free to use
+for anything. Cut, made mono and evened out in loudness for the game (tools/prepare_sounds.py).
+
+20200119 083339 chestnut hd beeeater.ogg, by Shyamal (CC0): https://commons.wikimedia.org/wiki/File%3A20200119_083339_chestnut_hd_beeeater.ogg
+  assets/sounds/birds.mp3
+Car Horn.wav, by 15HPanska_Ruttner_Jan (CC0): https://commons.wikimedia.org/wiki/File%3ACar_Horn.wav
+  assets/sounds/horn.mp3
+Cicada 20200619.wav, by Shyamal (CC0): https://commons.wikimedia.org/wiki/File%3ACicada_20200619.wav
+  assets/sounds/cicadas.mp3
+Corvus cornix.ogg, by Oona Räisänen (Mysid) (Public domain): https://commons.wikimedia.org/wiki/File%3ACorvus_cornix.ogg
+  assets/sounds/crow.mp3
+Country night noise.ogg, by hc (Public domain): https://commons.wikimedia.org/wiki/File%3ACountry_night_noise.ogg
+  assets/sounds/crickets.mp3
+Detroit62.ogg, by Sixthstar (talk) (CC0): https://commons.wikimedia.org/wiki/File%3ADetroit62.ogg
+  assets/sounds/engine-diesel.mp3
+Douzen kids on playground.ogg, by stephan (Public domain): https://commons.wikimedia.org/wiki/File%3ADouzen_kids_on_playground.ogg
+  assets/sounds/children.mp3
+Dull thud.ogg, by gregoryweir (Public domain): https://commons.wikimedia.org/wiki/File%3ADull_thud.ogg
+  assets/sounds/thud.mp3
+Forest track 3.ogg, by tball74 (Public domain): https://commons.wikimedia.org/wiki/File%3AForest_track_3.ogg
+  assets/sounds/step-1.mp3
+  assets/sounds/step-2.mp3
+  assets/sounds/step-3.mp3
+  assets/sounds/step-4.mp3
+  assets/sounds/step-5.mp3
+  assets/sounds/step-6.mp3
+GLASS BELL TAPPING SOUND.wav, by Muldoonsamuel55 (CC0): https://commons.wikimedia.org/wiki/File%3AGLASS_BELL_TAPPING_SOUND.wav
+  assets/sounds/glass.mp3
+Great Eared Nighjar from Vazhachal, Kerala.ogg, by Raghu.kuttan (Public domain): https://commons.wikimedia.org/wiki/File%3AGreat_Eared_Nighjar_from_Vazhachal%2C_Kerala.ogg
+  assets/sounds/nightjar.mp3
+Halsbandsittich.ogg, by an unnamed Wikimedia Commons contributor (CC0): https://commons.wikimedia.org/wiki/File%3AHalsbandsittich.ogg
+  assets/sounds/parakeets.mp3
+House Sparrow 202279702.wav, by *ngoomie (CC0): https://commons.wikimedia.org/wiki/File%3AHouse_Sparrow_202279702.wav
+  assets/sounds/sparrows.mp3
+Market activities record.ogg, by Aishatu98 (CC0): https://commons.wikimedia.org/wiki/File%3AMarket_activities_record.ogg
+  assets/sounds/market.mp3
+Medium rooster crowing.ogg, by alys (Public domain): https://commons.wikimedia.org/wiki/File%3AMedium_rooster_crowing.ogg
+  assets/sounds/rooster.mp3
+Pouring iced tea.ogg, by chocoholic (Public domain): https://commons.wikimedia.org/wiki/File%3APouring_iced_tea.ogg
+  assets/sounds/tea-pour.mp3
+Pseudacris triseriata chorus.wav, by Dawn VanDeman (CC0): https://commons.wikimedia.org/wiki/File%3APseudacris_triseriata_chorus.wav
+  assets/sounds/frogs.mp3
+Redvented Bulbul.ogg, by Gypsypkd (Public domain): https://commons.wikimedia.org/wiki/File%3ARedvented_Bulbul.ogg
+  assets/sounds/bulbul.mp3
+Rotating-bicycle-bell.wav, by AntumDeluge (CC0): https://commons.wikimedia.org/wiki/File%3ARotating-bicycle-bell.wav
+  assets/sounds/bell.mp3
+Starting a car and driving.ogg, by stephan (Public domain): https://commons.wikimedia.org/wiki/File%3AStarting_a_car_and_driving.ogg
+  assets/sounds/engine-car.mp3
+Sunday in the city street noise1.ogg, by cori (Public domain): https://commons.wikimedia.org/wiki/File%3ASunday_in_the_city_street_noise1.ogg
+  assets/sounds/street.mp3
+USSR bicycle 2T engine D-4.wav, by Віктор Ходєєв /Viktor Khodyeyev (Public domain): https://commons.wikimedia.org/wiki/File%3AUSSR_bicycle_2T_engine_D-4.wav
+  assets/sounds/engine-small.mp3
+
 Inaara's face pictures (assets/faces) are from her own picture sheet, shared by her parent for this game.
-Everything else (the houses, shops, palms, people and Inaara's body) is made by the game's own code.
+Everything else (the houses, shops, palms, vehicles, people and Inaara's body) is made by the game's own code.

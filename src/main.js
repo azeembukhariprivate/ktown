@@ -5,6 +5,7 @@ import { Input } from './input.js';
 import { Game } from './game.js';
 import { UI } from './ui.js';
 import { load, store } from './save.js';
+import { TownAudio, SOUNDS } from './audio.js';
 
 const canvas = document.getElementById('game');
 const ui = new UI(document.getElementById('ui'));
@@ -15,6 +16,9 @@ const touch = matchMedia('(pointer: coarse)').matches || 'ontouchstart' in windo
 const quality = params.get('quality') || (save.settings.quality === 'auto' ? (touch ? 'low' : 'high') : save.settings.quality);
 
 ui.loading(0);
+const audio = new TownAudio(save.settings);
+// Sound can only start after a key press or a tap.
+for (const ev of ['keydown', 'pointerdown', 'touchend']) addEventListener(ev, () => { if (!testing || params.has('sound')) audio.unlock(); }, { passive: true });
 
 let renderer;
 try {
@@ -66,6 +70,7 @@ ui.apply = key => {
   store(save);
   if (!game) return;
   if (key === 'time') game.setTime(save.settings.time);
+  if (key === 'sound' || key === 'volume') audio.applyVolume();
 };
 
 function play() {
@@ -73,6 +78,8 @@ function play() {
   game.screen = 'play';
   input.enabled = true;
   ui.hud(input.touchMode || touch);
+  ui.prompt(game.prompt);
+  ui.riding(game.mode === 'bike');
   game.checkArea();
   ui.toast(game.area || 'KTOWN');
   if (!save.seenHelp) {
@@ -98,8 +105,12 @@ ui.on('title', () => {
   ui.title();
 });
 ui.on('jump', () => (input.jumpPressed = true));
+ui.on('action', () => (input.actionPressed = true));
+ui.on('bell', () => (input.bellPressed = true));
 
 document.addEventListener('visibilitychange', () => {
+  if (document.hidden) audio.suspend();
+  else audio.resume();
   if (document.hidden) pause();
 });
 addEventListener('keydown', e => {
@@ -144,8 +155,17 @@ async function start() {
     ui.failed('Some of the town\'s files could not be loaded. Check the internet connection and try again.');
     throw e;
   }
-  game = new Game(renderer, assets, input, save, { quality });
+  game = new Game(renderer, assets, input, save, { quality, audio });
   game.onArea = name => game.screen === 'play' && ui.toast(name);
+  game.onPrompt = p => {
+    ui.prompt(p);
+    ui.riding(game.mode === 'bike');
+  };
+  game.onToast = text => ui.toast(text);
+  game.onMenu = (list, done) => {
+    input.releasePointer();
+    ui.places(list, done);
+  };
   resize();
   // Draw once so the first frame is ready before the title shows.
   renderer.compile(game.scene, game.camera);
@@ -157,7 +177,9 @@ async function start() {
       play,
       pause,
       state: () => ({
-        screen: game.screen, x: game.walker.x, y: game.walker.y, z: game.walker.z, state: game.walker.state,
+        screen: game.screen, x: game.her.x, y: game.her.y, z: game.her.z, state: game.walker.state, mode: game.mode,
+        prompt: game.prompt && game.prompt.text, speed: game.her.speed, ride: game.ride && game.ride.mode,
+        vehicles: game.traffic.vehicles.length, sound: audio.ready,
         face: game.hero.faceName, area: game.area, time: game.sky.time, people: game.people.list.length,
         calls: renderer.info.render.calls, triangles: renderer.info.render.triangles, fps: window.__fps
       }),
@@ -168,7 +190,9 @@ async function start() {
         if (dist != null) game.dist = dist;
         game.camReady = false;
       },
-      setTime: t => game.setTime(t)
+      setTime: t => game.setTime(t),
+      audio,
+      sounds: SOUNDS
     };
   }
 }

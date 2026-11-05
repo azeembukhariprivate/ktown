@@ -21,6 +21,8 @@ export class Input {
       this.keys.add(e.code);
       this.pressed.add(e.code);
       if (e.code === 'Space') this.jumpPressed = true;
+      if (e.code === 'KeyE') this.actionPressed = true;
+      if (e.code === 'KeyB') this.bellPressed = true;
       if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) e.preventDefault();
     });
     addEventListener('keyup', e => this.keys.delete(e.code));
@@ -151,10 +153,22 @@ export class Input {
     }
     const pausePad = pad && pad.buttons[9] && pad.buttons[9].pressed && !this.padPause;
     this.padPause = pad && pad.buttons[9] && pad.buttons[9].pressed;
-    const out = { look: { ...this.look }, zoom: this.zoom, jump, pressed: new Set(this.pressed), pausePad };
+    // Y does what the prompt says (get on, get off, take an autorickshaw); X rings the bell.
+    let action = this.actionPressed, bell = this.bellPressed;
+    if (pad && pad.buttons[3]) {
+      if (pad.buttons[3].pressed && !this.padAction) action = true;
+      this.padAction = pad.buttons[3].pressed;
+    }
+    if (pad && pad.buttons[2]) {
+      if (pad.buttons[2].pressed && !this.padBell) bell = true;
+      this.padBell = pad.buttons[2].pressed;
+    }
+    const out = { look: { ...this.look }, zoom: this.zoom, jump, action, bell, pressed: new Set(this.pressed), pausePad };
     this.look.x = this.look.y = 0;
     this.zoom = 0;
     this.jumpPressed = false;
+    this.actionPressed = false;
+    this.bellPressed = false;
     this.pressed.clear();
     return out;
   }

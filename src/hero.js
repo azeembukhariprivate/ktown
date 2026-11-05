@@ -38,17 +38,67 @@ function dressTexture() {
 }
 
 /**
- * The front of her head: part of an egg shape, with the picture laid straight onto it from the front (so the picture
- * itself isn't changed, only shown on a rounded surface).
+ * The front of her head: a gently rounded face, like the front of a real head (not a ball), with her picture laid
+ * straight onto it from the front. The picture itself isn't changed, only shown on this surface; its own see-through
+ * outline gives the head its shape from the front.
  */
-function faceGeo(rx, ry, rz) {
-  const g = new THREE.SphereGeometry(1, 40, 32, Math.PI * 0.5 - 1.45, 2.9, 0.05, Math.PI - 0.1);
-  const p = g.attributes.position, uv = g.attributes.uv;
-  const k = 1.0;
+function faceGeo(rx, ry) {
+  const g = new THREE.PlaneGeometry(2 * rx, 2 * ry, 24, 32);
+  const p = g.attributes.position;
   for (let i = 0; i < p.count; i++) {
-    const x = p.getX(i), y = p.getY(i), z = p.getZ(i);
-    p.setXYZ(i, x * rx, y * ry, z * rz);
-    uv.setXY(i, 0.5 + x / (2 * k), 0.5 + y / (2 * k));
+    const x = p.getX(i) / rx, y = p.getY(i) / ry;
+    // Fullest at the middle of the face, curving back towards the ears and over the top of the head.
+    p.setZ(i, FACE_Z - 0.075 * x * x - 0.05 * y * y - (y > 0.3 ? 0.03 * (y - 0.3) ** 2 : 0));
+  }
+  g.computeVertexNormals();
+  return g;
+}
+const FACE_Z = 0.1;
+
+/**
+ * Her hair behind the picture: a soft bob, a little smaller than the picture's outline so from the front only her
+ * picture shows, and from the side and back it's her hair, not a stretched picture.
+ */
+/** Her hair's look: very dark brown with fine strands and a soft shine, like in her pictures. */
+function hairTexture() {
+  const c = document.createElement('canvas');
+  c.width = c.height = 512;
+  const g = c.getContext('2d');
+  g.fillStyle = '#17110e';
+  g.fillRect(0, 0, 512, 512);
+  const r = rng(31);
+  for (let i = 0; i < 1400; i++) {
+    const x = r() * 512, len = 120 + r() * 300, y = r() * 200 - 60, bend = (r() - 0.5) * 40;
+    const light = r();
+    g.strokeStyle = light > 0.93 ? 'rgba(122,92,70,0.55)' : light > 0.6 ? 'rgba(70,50,38,0.5)' : 'rgba(8,6,5,0.6)';
+    g.lineWidth = 1 + r() * 1.6;
+    g.beginPath();
+    g.moveTo(x, y);
+    g.quadraticCurveTo(x + bend, y + len / 2, x + bend * 0.4, y + len);
+    g.stroke();
+  }
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+  t.wrapS = THREE.RepeatWrapping;
+  t.repeat.set(3, 1);
+  return t;
+}
+
+function hairGeo(rx, ry, rz) {
+  const g = new THREE.SphereGeometry(1, 32, 24);
+  const p = g.attributes.position;
+  for (let i = 0; i < p.count; i++) {
+    let x = p.getX(i), y = p.getY(i), z = p.getZ(i);
+    // A bob: fuller at the sides and back down to the jaw, cut straight and tucked in underneath.
+    const sides = y < 0.1 ? 1 + 0.12 * Math.min(1, (0.1 - y) * 2) : 1;
+    if (y < -0.62) y = -0.62 + (y + 0.62) * 0.35;
+    // At the front the hair stops above her chin and tucks back, so it never shows under her face.
+    if (z > 0 && y < -0.2) {
+      const k = Math.min(1, (-0.2 - y) / 0.5) * z;
+      y += k * 0.35;
+      z -= k * 0.6;
+    }
+    p.setXYZ(i, x * rx * sides, y * ry, z * rz * (z < 0 ? 1.08 : 1));
   }
   g.computeVertexNormals();
   return g;
@@ -72,7 +122,6 @@ export class Hero {
     };
     const dress = dressAt(1.6, 1), skirtCloth = dressAt(3.2, 0.8);
     const shoe = mat(PAL.shoe, { roughness: 0.35 });
-    const hair = mat(PAL.hair, { roughness: 0.55 });
     const add = (parent, geo, m, x = 0, y = 0, z = 0) => {
       const mesh = new THREE.Mesh(geo, m);
       mesh.position.set(x, y, z);
@@ -132,18 +181,18 @@ export class Hero {
       return sh;
     });
 
-    // Her head: dark hair all round, her picture on the front.
+    // Her head: her picture on the front, her hair behind it.
     this.head = new THREE.Group();
     this.head.position.set(0, 1.07, 0);
     this.body.add(this.head);
     // A child's head is big for her body. The picture's own outline (hair and face) is the front of the head; the
     // dark hair shape behind it is a little smaller, so from the front only her picture shows.
-    const rx = 0.125, ry = 0.165, rz = 0.13;
-    const back = add(this.head, new THREE.SphereGeometry(1, 28, 20), hair);
-    back.scale.set(rx * 0.86, ry * 0.86, rz * 0.9);
-    back.position.set(0, 0.006, -0.02);
-    this.faceMat = new THREE.MeshStandardMaterial({ map: assets.faces.happy, alphaTest: 0.5, roughness: 1, emissive: '#ffffff', emissiveIntensity: 0.42, emissiveMap: assets.faces.happy });
-    this.face = add(this.head, faceGeo(rx, ry, rz), this.faceMat, 0, 0, 0);
+    const rx = 0.125, ry = 0.165, rz = 0.11;
+    const hairMat = new THREE.MeshStandardMaterial({ map: hairTexture(), roughness: 0.55 });
+    const back = add(this.head, hairGeo(rx * 0.93, ry * 0.93, rz), hairMat);
+    back.position.set(0, 0.008, -0.02);
+    this.faceMat = new THREE.MeshStandardMaterial({ map: assets.faces.happy, alphaTest: 0.5, roughness: 0.95, emissive: '#ffffff', emissiveIntensity: 0.22, emissiveMap: assets.faces.happy });
+    this.face = add(this.head, faceGeo(rx, ry), this.faceMat, 0, 0, -0.005);
     this.face.castShadow = false;
     this.faceName = 'happy';
     this.t = 0;
@@ -161,7 +210,8 @@ export class Hero {
   update(dt, w, { nearPerson = false, camera = null } = {}) {
     this.t += dt;
     this.root.position.set(w.x, w.y, w.z);
-    this.root.rotation.y = w.heading;
+    this.root.rotation.order = 'YXZ';
+    this.root.rotation.set(0, w.heading, -(w.roll || 0));
     const sp = Math.hypot(w.vx, w.vz), s = Math.sin(w.phase * 2.2);
     let legSwing = 0, armSwing = 0, bob = 0, lean = 0, armsOut = 0, legSplit = 0;
     switch (w.state) {
@@ -182,16 +232,37 @@ export class Hero {
         legSplit = w.vy > 0 ? 0.5 : 0.3;
         armsOut = w.vy > 0 ? 2.4 : 1.6;
         break;
+      case 'bike':
+      case 'sit':
+        break;
       default:
         bob = Math.sin(this.t * 2.2) * 0.004;
     }
     const k = Math.min(1, dt * 14);
     const set = (o, v) => { o.rotation.x += (v - o.rotation.x) * k; };
-    set(this.legs[0], legSplit ? -legSplit : s * legSwing);
-    set(this.legs[1], legSplit ? legSplit * 0.6 : -s * legSwing);
-    set(this.arms[0], armsOut ? -armsOut : -s * armSwing);
-    set(this.arms[1], armsOut ? -armsOut : s * armSwing);
-    for (const [i, a] of this.arms.entries()) a.rotation.z += ((i ? 1 : -1) * (armsOut ? 0.5 : 0.24) - a.rotation.z) * k;
+    if (w.state === 'bike') {
+      // Pedalling, hands on the handlebar, leaning forward a little.
+      const pd = w.pedal || 0;
+      this.legs[0].rotation.x = -1.05 + Math.sin(pd) * 0.42;
+      this.legs[1].rotation.x = -1.05 - Math.sin(pd) * 0.42;
+      set(this.arms[0], -1.05);
+      set(this.arms[1], -1.05);
+      for (const [i, a] of this.arms.entries()) a.rotation.z += ((i ? 1 : -1) * 0.12 - a.rotation.z) * k;
+      lean = 0.22;
+    } else if (w.state === 'sit') {
+      // Sitting on a seat: legs forward, hands in her lap.
+      set(this.legs[0], -1.45);
+      set(this.legs[1], -1.45);
+      set(this.arms[0], -0.55);
+      set(this.arms[1], -0.55);
+      for (const [i, a] of this.arms.entries()) a.rotation.z += ((i ? 1 : -1) * 0.1 - a.rotation.z) * k;
+    } else {
+      set(this.legs[0], legSplit ? -legSplit : s * legSwing);
+      set(this.legs[1], legSplit ? legSplit * 0.6 : -s * legSwing);
+      set(this.arms[0], armsOut ? -armsOut : -s * armSwing);
+      set(this.arms[1], armsOut ? -armsOut : s * armSwing);
+      for (const [i, a] of this.arms.entries()) a.rotation.z += ((i ? 1 : -1) * (armsOut ? 0.5 : 0.24) - a.rotation.z) * k;
+    }
     this.body.position.y = bob;
     this.body.rotation.x += (lean - this.body.rotation.x) * k;
     this.skirt.scale.x = this.skirt.scale.z = 1 + Math.min(0.12, sp * 0.02) + (w.state === 'fall' ? 0.08 : 0);
@@ -211,7 +282,7 @@ export class Hero {
     // Her face for the moment.
     let face = 'happy';
     if (w.bumped < 0.6) face = 'surprised';
-    else if (w.state === 'run' || w.state === 'jump') face = 'excited';
+    else if (w.state === 'run' || w.state === 'jump' || (w.state === 'bike' && sp > 4.5)) face = 'excited';
     else if (nearPerson) face = 'shy';
     else if (this.lookAround > 7 && Math.sin(this.lookAround * 0.7) > 0.6) face = 'playful';
     this.setFace(face);

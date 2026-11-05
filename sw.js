@@ -1,7 +1,7 @@
 // Keeps the game on the device so it opens without the internet after the first visit.
 // It answers from the saved copy straight away and fetches any newer copy for next time.
 // The list of files is written by tools/list_files.mjs.
-const VERSION = '0.1.0';
+const VERSION = '0.2.0';
 const CACHE = 'ktown-' + VERSION;
 const FILES = [
   './',
@@ -40,6 +40,33 @@ const FILES = [
   'assets/models/yellow_onion.glb',
   'assets/sky/day.jpg',
   'assets/sky/evening.jpg',
+  'assets/sounds/bell.mp3',
+  'assets/sounds/birds.mp3',
+  'assets/sounds/bulbul.mp3',
+  'assets/sounds/children.mp3',
+  'assets/sounds/cicadas.mp3',
+  'assets/sounds/crickets.mp3',
+  'assets/sounds/crow.mp3',
+  'assets/sounds/engine-car.mp3',
+  'assets/sounds/engine-diesel.mp3',
+  'assets/sounds/engine-small.mp3',
+  'assets/sounds/frogs.mp3',
+  'assets/sounds/glass.mp3',
+  'assets/sounds/horn.mp3',
+  'assets/sounds/market.mp3',
+  'assets/sounds/nightjar.mp3',
+  'assets/sounds/parakeets.mp3',
+  'assets/sounds/rooster.mp3',
+  'assets/sounds/sparrows.mp3',
+  'assets/sounds/step-1.mp3',
+  'assets/sounds/step-2.mp3',
+  'assets/sounds/step-3.mp3',
+  'assets/sounds/step-4.mp3',
+  'assets/sounds/step-5.mp3',
+  'assets/sounds/step-6.mp3',
+  'assets/sounds/street.mp3',
+  'assets/sounds/tea-pour.mp3',
+  'assets/sounds/thud.mp3',
   'assets/textures/brick/arm.jpg',
   'assets/textures/brick/color.jpg',
   'assets/textures/brick/normal.jpg',
@@ -88,6 +115,7 @@ const FILES = [
   'index.html',
   'manifest.webmanifest',
   'src/assets.js',
+  'src/audio.js',
   'src/build.js',
   'src/game.js',
   'src/hero.js',
@@ -97,10 +125,13 @@ const FILES = [
   'src/move.js',
   'src/people.js',
   'src/plants.js',
+  'src/roads.js',
   'src/save.js',
   'src/sky.js',
   'src/town3d.js',
+  'src/traffic.js',
   'src/ui.js',
+  'src/vehicles.js',
   'vendor/three/three.js'
 ];
 
