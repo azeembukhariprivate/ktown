@@ -1,0 +1,120 @@
+KTOWN uses these things made by others. Thank you.
+
+three.js 0.186.0 (vendor/three/three.js, with its GLTFLoader and BufferGeometryUtils, bundled into one file)
+  Copyright 2010-2026 three.js authors. MIT License (vendor/three/LICENSE).
+
+Fredoka font (assets/fonts/Fredoka.ttf)
+  Copyright 2016 The Fredoka Project Authors. SIL Open Font License, Version 1.1 (assets/fonts/OFL.txt).
+
+Textures, skies and models from Poly Haven (https://polyhaven.com), all CC0 (public domain): free to use for anything.
+Each file's source and SHA-256 is in assets/SOURCES.json. They were made smaller for the game (tools/prepare_assets.py).
+
+Asphalt 02, by Rob Tuytel: https://polyhaven.com/a/asphalt_02
+  assets/textures/road/arm.jpg
+  assets/textures/road/color.jpg
+  assets/textures/road/normal.jpg
+Bananas, by Alexander Shulha: https://polyhaven.com/a/bananas
+  assets/models/bananas.glb
+Beige Wall 001, by Dimitrios Savva, Rico Cilliers: https://polyhaven.com/a/beige_wall_001
+  assets/textures/plaster/arm.jpg
+  assets/textures/plaster/color.jpg
+  assets/textures/plaster/normal.jpg
+Blue Plaster Weathered, by Amal Kumar: https://polyhaven.com/a/blue_plaster_weathered
+  assets/textures/plaster-blue/arm.jpg
+  assets/textures/plaster-blue/color.jpg
+  assets/textures/plaster-blue/normal.jpg
+Brass Pot 01, by Rico Cilliers: https://polyhaven.com/a/brass_pot_01
+  assets/models/brass_pot_01.glb
+Castle Brick 02 Red, by Rob Tuytel: https://polyhaven.com/a/castle_brick_02_red
+  assets/textures/brick/arm.jpg
+  assets/textures/brick/color.jpg
+  assets/textures/brick/normal.jpg
+Ceramic Pot, by Aron Łyczek: https://polyhaven.com/a/ceramic_pot
+  assets/models/ceramic_pot.glb
+Clay Roof Tiles 02, by Amal Kumar: https://polyhaven.com/a/clay_roof_tiles_02
+  assets/textures/roof/arm.jpg
+  assets/textures/roof/color.jpg
+  assets/textures/roof/normal.jpg
+Coast Sand 01, by Rob Tuytel: https://polyhaven.com/a/coast_sand_01
+  assets/textures/sand/arm.jpg
+  assets/textures/sand/color.jpg
+  assets/textures/sand/normal.jpg
+Concrete Pavement, by Charlotte Baglioni: https://polyhaven.com/a/concrete_pavement
+  assets/textures/paving/arm.jpg
+  assets/textures/paving/color.jpg
+  assets/textures/paving/normal.jpg
+Corrugated Iron 02, by Jenelle van Heerden, Sergej Majboroda: https://polyhaven.com/a/corrugated_iron_02
+  assets/textures/iron/arm.jpg
+  assets/textures/iron/color.jpg
+  assets/textures/iron/normal.jpg
+Damaged Plaster, by Amal Kumar: https://polyhaven.com/a/damaged_plaster
+  assets/textures/plaster-old/arm.jpg
+  assets/textures/plaster-old/color.jpg
+  assets/textures/plaster-old/normal.jpg
+Fern 02, by Rob Tuytel, Rico Cilliers: https://polyhaven.com/a/fern_02
+  assets/models/fern_02.glb
+Food Ginger 01, by Oliver Harries: https://polyhaven.com/a/food_ginger_01
+  assets/models/food_ginger_01.glb
+Food Lime 01, by Oliver Harries: https://polyhaven.com/a/food_lime_01
+  assets/models/food_lime_01.glb
+Grass Medium 01, by Rob Tuytel, Rico Cilliers: https://polyhaven.com/a/grass_medium_01
+  assets/models/grass_medium_01.glb
+Kloofendal 48d Partly Cloudy (Pure Sky), by Greg Zaal, Jarod Guest: https://polyhaven.com/a/kloofendal_48d_partly_cloudy_puresky
+  assets/sky/day.jpg
+Leafy Grass, by Charlotte Baglioni: https://polyhaven.com/a/leafy_grass
+  assets/textures/grass/arm.jpg
+  assets/textures/grass/color.jpg
+  assets/textures/grass/normal.jpg
+Lemon, by Kuutti Siitonen: https://polyhaven.com/a/lemon
+  assets/models/lemon.glb
+Metal Trash Can, by GurJas Studios: https://polyhaven.com/a/metal_trash_can
+  assets/models/metal_trash_can.glb
+Old Tyre, by MP: https://polyhaven.com/a/old_tyre
+  assets/models/old_tyre.glb
+Painted Wooden Bench, by Kirill Sannikov: https://polyhaven.com/a/painted_wooden_bench
+  assets/models/painted_wooden_bench.glb
+Palm Tree Bark, by Dimitrios Savva, Rico Cilliers: https://polyhaven.com/a/palm_tree_bark
+  assets/textures/palm/arm.jpg
+  assets/textures/palm/color.jpg
+  assets/textures/palm/normal.jpg
+Planter Pot Clay, by Amal Kumar: https://polyhaven.com/a/planter_pot_clay
+  assets/models/planter_pot_clay.glb
+Plastic Crate 01, by PierreB3D: https://polyhaven.com/a/plastic_crate_01
+  assets/models/plastic_crate_01.glb
+Plastic Jerrycan, by Ulan Cabanilla: https://polyhaven.com/a/plastic_jerrycan
+  assets/models/plastic_jerrycan.glb
+Plastic Monobloc Chair 01, by Kuutti Siitonen: https://polyhaven.com/a/plastic_monobloc_chair_01
+  assets/models/plastic_monobloc_chair_01.glb
+Potted Plant 02, by Rico Cilliers: https://polyhaven.com/a/potted_plant_02
+  assets/models/potted_plant_02.glb
+Qwantani Dusk 2 (Pure Sky), by Greg Zaal, Jarod Guest: https://polyhaven.com/a/qwantani_dusk_2_puresky
+  assets/sky/evening.jpg
+Red Laterite Soil Stones, by Amal Kumar: https://polyhaven.com/a/red_laterite_soil_stones
+  assets/textures/laterite/arm.jpg
+  assets/textures/laterite/color.jpg
+  assets/textures/laterite/normal.jpg
+Roof Tiles 14, by Rob Tuytel: https://polyhaven.com/a/roof_tiles_14
+  assets/textures/roof-old/arm.jpg
+  assets/textures/roof-old/color.jpg
+  assets/textures/roof-old/normal.jpg
+Sweet Potato, by Jan Martens: https://polyhaven.com/a/sweet_potato
+  assets/models/sweet_potato.glb
+Utility Box 01, by James Ray Cock: https://polyhaven.com/a/utility_box_01
+  assets/models/utility_box_01.glb
+Wicker Basket 01, by Kuutti Siitonen: https://polyhaven.com/a/wicker_basket_01
+  assets/models/wicker_basket_01.glb
+Wood Planks, by Amal Kumar: https://polyhaven.com/a/wood_planks
+  assets/textures/planks/arm.jpg
+  assets/textures/planks/color.jpg
+  assets/textures/planks/normal.jpg
+Wood Shutter, by Dimitrios Savva: https://polyhaven.com/a/wood_shutter
+  assets/textures/shutter/arm.jpg
+  assets/textures/shutter/color.jpg
+  assets/textures/shutter/normal.jpg
+Wooden Crate 01, by James Ray Cock: https://polyhaven.com/a/wooden_crate_01
+  assets/models/wooden_crate_01.glb
+Yellow Onion, by Kuutti Siitonen: https://polyhaven.com/a/yellow_onion
+  assets/models/yellow_onion.glb
+
+Inaara's face pictures (assets/faces) are from her own picture sheet, shared by her parent for this game.
+Everything else (the houses, shops, palms, people and Inaara's body) is made by the game's own code.

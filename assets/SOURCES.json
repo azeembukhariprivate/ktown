@@ -1,0 +1,627 @@
+{
+ "assets/models/bananas.glb": {
+  "from": "https://polyhaven.com/a/bananas",
+  "name": "Bananas",
+  "by": [
+   "Alexander Shulha"
+  ],
+  "licence": "CC0",
+  "sha256": "8c152d0fb85aee8af776c24410691f3e054a680e5fbe432c9235daf441451640"
+ },
+ "assets/models/brass_pot_01.glb": {
+  "from": "https://polyhaven.com/a/brass_pot_01",
+  "name": "Brass Pot 01",
+  "by": [
+   "Rico Cilliers"
+  ],
+  "licence": "CC0",
+  "sha256": "9e7de2eccb63940aec8155ed910aa55c930d0f61c95be3f31a2b4a9d27df0a5a"
+ },
+ "assets/models/ceramic_pot.glb": {
+  "from": "https://polyhaven.com/a/ceramic_pot",
+  "name": "Ceramic Pot",
+  "by": [
+   "Aron \u0141yczek"
+  ],
+  "licence": "CC0",
+  "sha256": "7cab4dea4a8e6ca66cf17f73ec6cdac2ee7148c903bd05040f3af4b6ec7601e1"
+ },
+ "assets/models/fern_02.glb": {
+  "from": "https://polyhaven.com/a/fern_02",
+  "name": "Fern 02",
+  "by": [
+   "Rob Tuytel",
+   "Rico Cilliers"
+  ],
+  "licence": "CC0",
+  "sha256": "fa1878d96a796a02bb8b7c261b727ee7a4dc48d08cf9a787ceab1855a2ac0b5d"
+ },
+ "assets/models/food_ginger_01.glb": {
+  "from": "https://polyhaven.com/a/food_ginger_01",
+  "name": "Food Ginger 01",
+  "by": [
+   "Oliver Harries"
+  ],
+  "licence": "CC0",
+  "sha256": "6c6fb9c2bc42a8f2622a655989d26fb814ca23b568c5816a31a92c93821189f9"
+ },
+ "assets/models/food_lime_01.glb": {
+  "from": "https://polyhaven.com/a/food_lime_01",
+  "name": "Food Lime 01",
+  "by": [
+   "Oliver Harries"
+  ],
+  "licence": "CC0",
+  "sha256": "024a5f4aef2bf1f1375df57cc2a63b72bc63b86d2aa1bad1ca713926b9cde08f"
+ },
+ "assets/models/grass_medium_01.glb": {
+  "from": "https://polyhaven.com/a/grass_medium_01",
+  "name": "Grass Medium 01",
+  "by": [
+   "Rob Tuytel",
+   "Rico Cilliers"
+  ],
+  "licence": "CC0",
+  "sha256": "a45df8be87b41056221de379aa2af9c0018c1a3f5a0043fa44865e7ef7ff9172"
+ },
+ "assets/models/lemon.glb": {
+  "from": "https://polyhaven.com/a/lemon",
+  "name": "Lemon",
+  "by": [
+   "Kuutti Siitonen"
+  ],
+  "licence": "CC0",
+  "sha256": "ea90bdb4971a9594a17744f86aab44a8de9177ee589adb65a0a0d5f13aa8eeaf"
+ },
+ "assets/models/metal_trash_can.glb": {
+  "from": "https://polyhaven.com/a/metal_trash_can",
+  "name": "Metal Trash Can",
+  "by": [
+   "GurJas Studios"
+  ],
+  "licence": "CC0",
+  "sha256": "134a3f647aed5c5205bdcecb7c3f18ccb3a0579361056054f7d0f63a43e963d6"
+ },
+ "assets/models/old_tyre.glb": {
+  "from": "https://polyhaven.com/a/old_tyre",
+  "name": "Old Tyre",
+  "by": [
+   "MP"
+  ],
+  "licence": "CC0",
+  "sha256": "ff8758890de7c46f5a3004f0933f29692690df11bc7d1e6251ebd7fbaa67a01a"
+ },
+ "assets/models/painted_wooden_bench.glb": {
+  "from": "https://polyhaven.com/a/painted_wooden_bench",
+  "name": "Painted Wooden Bench",
+  "by": [
+   "Kirill Sannikov"
+  ],
+  "licence": "CC0",
+  "sha256": "482863f08df3a0fddc3351f7a052ad2cf5fbd85df91e6a610ea79edf124d8345"
+ },
+ "assets/models/planter_pot_clay.glb": {
+  "from": "https://polyhaven.com/a/planter_pot_clay",
+  "name": "Planter Pot Clay",
+  "by": [
+   "Amal Kumar"
+  ],
+  "licence": "CC0",
+  "sha256": "e6049d7be245a82b3a1df575dc74acfdf9010c9b9130b2a5ccc4537b3a888133"
+ },
+ "assets/models/plastic_crate_01.glb": {
+  "from": "https://polyhaven.com/a/plastic_crate_01",
+  "name": "Plastic Crate 01",
+  "by": [
+   "PierreB3D"
+  ],
+  "licence": "CC0",
+  "sha256": "5f91489fce4b8f5106d42fcab8e23c9aefde1877965503b2b7ecc00d7b6abcbd"
+ },
+ "assets/models/plastic_jerrycan.glb": {
+  "from": "https://polyhaven.com/a/plastic_jerrycan",
+  "name": "Plastic Jerrycan",
+  "by": [
+   "Ulan Cabanilla"
+  ],
+  "licence": "CC0",
+  "sha256": "f674a95fb171e8be2ebcc68fdd0bde275926b7d4585eefdb1e121f6a81534937"
+ },
+ "assets/models/plastic_monobloc_chair_01.glb": {
+  "from": "https://polyhaven.com/a/plastic_monobloc_chair_01",
+  "name": "Plastic Monobloc Chair 01",
+  "by": [
+   "Kuutti Siitonen"
+  ],
+  "licence": "CC0",
+  "sha256": "80499623a6c24a5f06ae8e35886939af65732a191b0ff5c51c5e131cbffa817d"
+ },
+ "assets/models/potted_plant_02.glb": {
+  "from": "https://polyhaven.com/a/potted_plant_02",
+  "name": "Potted Plant 02",
+  "by": [
+   "Rico Cilliers"
+  ],
+  "licence": "CC0",
+  "sha256": "5c30473d99e0edfde241c0db680d07bbda7176be3c8b686f65436e668144cb87"
+ },
+ "assets/models/sweet_potato.glb": {
+  "from": "https://polyhaven.com/a/sweet_potato",
+  "name": "Sweet Potato",
+  "by": [
+   "Jan Martens"
+  ],
+  "licence": "CC0",
+  "sha256": "2403991af6996419838979dab0015bbc658225e7a9756b906faa58871dece77a"
+ },
+ "assets/models/utility_box_01.glb": {
+  "from": "https://polyhaven.com/a/utility_box_01",
+  "name": "Utility Box 01",
+  "by": [
+   "James Ray Cock"
+  ],
+  "licence": "CC0",
+  "sha256": "1aafdffd4cf6647ee19d0a88cc3588b593397d0257b8d4d313c519d553b8341a"
+ },
+ "assets/models/wicker_basket_01.glb": {
+  "from": "https://polyhaven.com/a/wicker_basket_01",
+  "name": "Wicker Basket 01",
+  "by": [
+   "Kuutti Siitonen"
+  ],
+  "licence": "CC0",
+  "sha256": "282262f722d1122d81cb08300f94b598adb61ebf0f4931729e8e6f05bba1623b"
+ },
+ "assets/models/wooden_crate_01.glb": {
+  "from": "https://polyhaven.com/a/wooden_crate_01",
+  "name": "Wooden Crate 01",
+  "by": [
+   "James Ray Cock"
+  ],
+  "licence": "CC0",
+  "sha256": "e689a090aa5e6a2a32f83a459712a80e49999ff25b9ec2597ac5e1b96a9b256e"
+ },
+ "assets/models/yellow_onion.glb": {
+  "from": "https://polyhaven.com/a/yellow_onion",
+  "name": "Yellow Onion",
+  "by": [
+   "Kuutti Siitonen"
+  ],
+  "licence": "CC0",
+  "sha256": "891ca73a97d4e016fde09f55caa8c2d35b0e7c6aeb0f2c832e6352d8a802df0f"
+ },
+ "assets/sky/day.jpg": {
+  "from": "https://polyhaven.com/a/kloofendal_48d_partly_cloudy_puresky",
+  "name": "Kloofendal 48d Partly Cloudy (Pure Sky)",
+  "by": [
+   "Greg Zaal",
+   "Jarod Guest"
+  ],
+  "licence": "CC0",
+  "sha256": "ae2dbadac9dc4adf6787de1e7bb93d2fa4ccfe059ffa521d0d7b45d5c83a3666"
+ },
+ "assets/sky/evening.jpg": {
+  "from": "https://polyhaven.com/a/qwantani_dusk_2_puresky",
+  "name": "Qwantani Dusk 2 (Pure Sky)",
+  "by": [
+   "Greg Zaal",
+   "Jarod Guest"
+  ],
+  "licence": "CC0",
+  "sha256": "a215eace3cf4f2823e93e551a4220a0db89c9d3541ce83193094f7978068f533"
+ },
+ "assets/textures/brick/arm.jpg": {
+  "from": "https://polyhaven.com/a/castle_brick_02_red",
+  "name": "Castle Brick 02 Red",
+  "by": [
+   "Rob Tuytel"
+  ],
+  "licence": "CC0",
+  "sha256": "904b092f1c56b84590acb153784e51db85c07b3e37eb4562e6bfb55f89a288d4"
+ },
+ "assets/textures/brick/color.jpg": {
+  "from": "https://polyhaven.com/a/castle_brick_02_red",
+  "name": "Castle Brick 02 Red",
+  "by": [
+   "Rob Tuytel"
+  ],
+  "licence": "CC0",
+  "sha256": "660dcd1d399b297ded074fa63f2b1cae03c527506c33832ebb0b9579f2f13768"
+ },
+ "assets/textures/brick/normal.jpg": {
+  "from": "https://polyhaven.com/a/castle_brick_02_red",
+  "name": "Castle Brick 02 Red",
+  "by": [
+   "Rob Tuytel"
+  ],
+  "licence": "CC0",
+  "sha256": "f8d5f563dc86c9756cd9975306e700a6dddbfa0ab9a01cab3779a42f2fc92a28"
+ },
+ "assets/textures/grass/arm.jpg": {
+  "from": "https://polyhaven.com/a/leafy_grass",
+  "name": "Leafy Grass",
+  "by": [
+   "Charlotte Baglioni"
+  ],
+  "licence": "CC0",
+  "sha256": "8eaa91bdfb18403ac99abdac0aec6e967b96c08a115afa8cefda5810dc9802a5"
+ },
+ "assets/textures/grass/color.jpg": {
+  "from": "https://polyhaven.com/a/leafy_grass",
+  "name": "Leafy Grass",
+  "by": [
+   "Charlotte Baglioni"
+  ],
+  "licence": "CC0",
+  "sha256": "c306ce38f8393fbce61264e0a1f436d39de228dbdca75faafa64970cca1770b8"
+ },
+ "assets/textures/grass/normal.jpg": {
+  "from": "https://polyhaven.com/a/leafy_grass",
+  "name": "Leafy Grass",
+  "by": [
+   "Charlotte Baglioni"
+  ],
+  "licence": "CC0",
+  "sha256": "4127faba8914fe3b69f3f9335d4f27ff059de45824a980ccdd7a48562e5eb974"
+ },
+ "assets/textures/iron/arm.jpg": {
+  "from": "https://polyhaven.com/a/corrugated_iron_02",
+  "name": "Corrugated Iron 02",
+  "by": [
+   "Jenelle van Heerden",
+   "Sergej Majboroda"
+  ],
+  "licence": "CC0",
+  "sha256": "c63286bf4ffcbd24b327b690e248ef2c018c935134d58af4c7711003ef397a5d"
+ },
+ "assets/textures/iron/color.jpg": {
+  "from": "https://polyhaven.com/a/corrugated_iron_02",
+  "name": "Corrugated Iron 02",
+  "by": [
+   "Jenelle van Heerden",
+   "Sergej Majboroda"
+  ],
+  "licence": "CC0",
+  "sha256": "c9c01b0b71c6b17465e189a69e9198838d27afda0b362347fe06b8ec27969c5e"
+ },
+ "assets/textures/iron/normal.jpg": {
+  "from": "https://polyhaven.com/a/corrugated_iron_02",
+  "name": "Corrugated Iron 02",
+  "by": [
+   "Jenelle van Heerden",
+   "Sergej Majboroda"
+  ],
+  "licence": "CC0",
+  "sha256": "a61443ffa652415da68cc2a4dfc1f43ec8a62c7b87a82f618062b5d8263b2f0e"
+ },
+ "assets/textures/laterite/arm.jpg": {
+  "from": "https://polyhaven.com/a/red_laterite_soil_stones",
+  "name": "Red Laterite Soil Stones",
+  "by": [
+   "Amal Kumar"
+  ],
+  "licence": "CC0",
+  "sha256": "58f66c1a50dc4712ab99b1b324c7179f3bf200d96071bd0945927f88c2c62a86"
+ },
+ "assets/textures/laterite/color.jpg": {
+  "from": "https://polyhaven.com/a/red_laterite_soil_stones",
+  "name": "Red Laterite Soil Stones",
+  "by": [
+   "Amal Kumar"
+  ],
+  "licence": "CC0",
+  "sha256": "929d07f42852f29f14a6554239c1b87c628bf6be0a605b32d42f959279968e47"
+ },
+ "assets/textures/laterite/normal.jpg": {
+  "from": "https://polyhaven.com/a/red_laterite_soil_stones",
+  "name": "Red Laterite Soil Stones",
+  "by": [
+   "Amal Kumar"
+  ],
+  "licence": "CC0",
+  "sha256": "3bd6ddc57ea10902e3bf733769124ea387c2265f4fa27a6288e42bde43485ec8"
+ },
+ "assets/textures/palm/arm.jpg": {
+  "from": "https://polyhaven.com/a/palm_tree_bark",
+  "name": "Palm Tree Bark",
+  "by": [
+   "Dimitrios Savva",
+   "Rico Cilliers"
+  ],
+  "licence": "CC0",
+  "sha256": "82621c77670bf987d94dd4a697ec48cde794d94b902b3da2e5a4be3ad9ce8ee8"
+ },
+ "assets/textures/palm/color.jpg": {
+  "from": "https://polyhaven.com/a/palm_tree_bark",
+  "name": "Palm Tree Bark",
+  "by": [
+   "Dimitrios Savva",
+   "Rico Cilliers"
+  ],
+  "licence": "CC0",
+  "sha256": "0ecc94f59db0369747686eed633f27621d54a914c0982e0ea9c6a7e6a616b5b5"
+ },
+ "assets/textures/palm/normal.jpg": {
+  "from": "https://polyhaven.com/a/palm_tree_bark",
+  "name": "Palm Tree Bark",
+  "by": [
+   "Dimitrios Savva",
+   "Rico Cilliers"
+  ],
+  "licence": "CC0",
+  "sha256": "c8313f1ce7773c7332527b5c5b7b872053c56a088d20a6184bcc5d9e6739c4e6"
+ },
+ "assets/textures/paving/arm.jpg": {
+  "from": "https://polyhaven.com/a/concrete_pavement",
+  "name": "Concrete Pavement",
+  "by": [
+   "Charlotte Baglioni"
+  ],
+  "licence": "CC0",
+  "sha256": "541f3c85222ff5dcd1fc8c2c2666b73ca5142501bac54a196f555c178f728b9b"
+ },
+ "assets/textures/paving/color.jpg": {
+  "from": "https://polyhaven.com/a/concrete_pavement",
+  "name": "Concrete Pavement",
+  "by": [
+   "Charlotte Baglioni"
+  ],
+  "licence": "CC0",
+  "sha256": "1bb3d0b88973b3ca3b06ed0e0345c2f4da5baf27eaccb1d1340eda016e188b94"
+ },
+ "assets/textures/paving/normal.jpg": {
+  "from": "https://polyhaven.com/a/concrete_pavement",
+  "name": "Concrete Pavement",
+  "by": [
+   "Charlotte Baglioni"
+  ],
+  "licence": "CC0",
+  "sha256": "a8fbac80420f6ef453bbba7a0e486b45f7763afb5a5f0667e5bdf19353e44ae1"
+ },
+ "assets/textures/planks/arm.jpg": {
+  "from": "https://polyhaven.com/a/wood_planks",
+  "name": "Wood Planks",
+  "by": [
+   "Amal Kumar"
+  ],
+  "licence": "CC0",
+  "sha256": "08ad91144cab2dd69b93bdece28defddc122994eeb0feb02cd79ec675c5e499d"
+ },
+ "assets/textures/planks/color.jpg": {
+  "from": "https://polyhaven.com/a/wood_planks",
+  "name": "Wood Planks",
+  "by": [
+   "Amal Kumar"
+  ],
+  "licence": "CC0",
+  "sha256": "dab384a6a924cd2beea1b7d8912bd1e5044d21066a8deea86b89a16ce40eec05"
+ },
+ "assets/textures/planks/normal.jpg": {
+  "from": "https://polyhaven.com/a/wood_planks",
+  "name": "Wood Planks",
+  "by": [
+   "Amal Kumar"
+  ],
+  "licence": "CC0",
+  "sha256": "bcde1acbe6b52db9ab45973e216496d0c8bc67b8fd17e5fea9c3f60ffd2d0c7c"
+ },
+ "assets/textures/plaster-blue/arm.jpg": {
+  "from": "https://polyhaven.com/a/blue_plaster_weathered",
+  "name": "Blue Plaster Weathered",
+  "by": [
+   "Amal Kumar"
+  ],
+  "licence": "CC0",
+  "sha256": "b155eaeec952fd2b915ff84405939ccb5af27cd3c4d5073c581799d4c100b76c"
+ },
+ "assets/textures/plaster-blue/color.jpg": {
+  "from": "https://polyhaven.com/a/blue_plaster_weathered",
+  "name": "Blue Plaster Weathered",
+  "by": [
+   "Amal Kumar"
+  ],
+  "licence": "CC0",
+  "sha256": "88831db19c92ec5c5c72321254be8ea757cdc8c88563a789cccf45baf7f6229f"
+ },
+ "assets/textures/plaster-blue/normal.jpg": {
+  "from": "https://polyhaven.com/a/blue_plaster_weathered",
+  "name": "Blue Plaster Weathered",
+  "by": [
+   "Amal Kumar"
+  ],
+  "licence": "CC0",
+  "sha256": "b48eda6bf03d02978dde78cbb46044ce890f77a5f5a98d66bb4e9e71107f2bee"
+ },
+ "assets/textures/plaster-old/arm.jpg": {
+  "from": "https://polyhaven.com/a/damaged_plaster",
+  "name": "Damaged Plaster",
+  "by": [
+   "Amal Kumar"
+  ],
+  "licence": "CC0",
+  "sha256": "58dc1ef272d5fd4343749b184a7e6d0877c8f02994473de363c9bc4e2dce9501"
+ },
+ "assets/textures/plaster-old/color.jpg": {
+  "from": "https://polyhaven.com/a/damaged_plaster",
+  "name": "Damaged Plaster",
+  "by": [
+   "Amal Kumar"
+  ],
+  "licence": "CC0",
+  "sha256": "0be4b14d9fc35efff7666641330acaad4e947511ab0fca8c55e0f7008b08711d"
+ },
+ "assets/textures/plaster-old/normal.jpg": {
+  "from": "https://polyhaven.com/a/damaged_plaster",
+  "name": "Damaged Plaster",
+  "by": [
+   "Amal Kumar"
+  ],
+  "licence": "CC0",
+  "sha256": "bb4a0d40825edaf041648dce23228e105fc0a7ab42fb7ee8bee5016865f2f9d3"
+ },
+ "assets/textures/plaster/arm.jpg": {
+  "from": "https://polyhaven.com/a/beige_wall_001",
+  "name": "Beige Wall 001",
+  "by": [
+   "Dimitrios Savva",
+   "Rico Cilliers"
+  ],
+  "licence": "CC0",
+  "sha256": "963d6f56ceb3fff7555cb59130113fa4a1a96bbc383ebffa8dfd168a26e534a5"
+ },
+ "assets/textures/plaster/color.jpg": {
+  "from": "https://polyhaven.com/a/beige_wall_001",
+  "name": "Beige Wall 001",
+  "by": [
+   "Dimitrios Savva",
+   "Rico Cilliers"
+  ],
+  "licence": "CC0",
+  "sha256": "fca3681aeb7e8d0b022b4c39ce5dd961850a84bb2a9353167fb0c087f0c2cb7d"
+ },
+ "assets/textures/plaster/normal.jpg": {
+  "from": "https://polyhaven.com/a/beige_wall_001",
+  "name": "Beige Wall 001",
+  "by": [
+   "Dimitrios Savva",
+   "Rico Cilliers"
+  ],
+  "licence": "CC0",
+  "sha256": "219192402086ff70812814141a5904b5f01c811159dc4cb143bac9ebf76afec3"
+ },
+ "assets/textures/road/arm.jpg": {
+  "from": "https://polyhaven.com/a/asphalt_02",
+  "name": "Asphalt 02",
+  "by": [
+   "Rob Tuytel"
+  ],
+  "licence": "CC0",
+  "sha256": "cc4453fa7b24e867aae7f0565bbe55fde47f54a8e1698864b30a3cae5c528573"
+ },
+ "assets/textures/road/color.jpg": {
+  "from": "https://polyhaven.com/a/asphalt_02",
+  "name": "Asphalt 02",
+  "by": [
+   "Rob Tuytel"
+  ],
+  "licence": "CC0",
+  "sha256": "943bd0d2cfed0e35e5e58360c98b9a24b876732ca893554a5b192ef9bbad6ef7"
+ },
+ "assets/textures/road/normal.jpg": {
+  "from": "https://polyhaven.com/a/asphalt_02",
+  "name": "Asphalt 02",
+  "by": [
+   "Rob Tuytel"
+  ],
+  "licence": "CC0",
+  "sha256": "97551e6f297b41a1e3e23599f70d2adc432d238fc7a96a157c0471f65cc2fcba"
+ },
+ "assets/textures/roof-old/arm.jpg": {
+  "from": "https://polyhaven.com/a/roof_tiles_14",
+  "name": "Roof Tiles 14",
+  "by": [
+   "Rob Tuytel"
+  ],
+  "licence": "CC0",
+  "sha256": "42b8b04b8c94d251a3184656733173856195f2a67f03790e134d21134555877c"
+ },
+ "assets/textures/roof-old/color.jpg": {
+  "from": "https://polyhaven.com/a/roof_tiles_14",
+  "name": "Roof Tiles 14",
+  "by": [
+   "Rob Tuytel"
+  ],
+  "licence": "CC0",
+  "sha256": "2ec21c90214a3ff209568b44c3e9f59ede3aefbbc25554a059b00be8ee184713"
+ },
+ "assets/textures/roof-old/normal.jpg": {
+  "from": "https://polyhaven.com/a/roof_tiles_14",
+  "name": "Roof Tiles 14",
+  "by": [
+   "Rob Tuytel"
+  ],
+  "licence": "CC0",
+  "sha256": "454bd944a9c7bf83c357cf74fdd52173cd2cd8cdd80cf8a7798452d3acc9e4d7"
+ },
+ "assets/textures/roof/arm.jpg": {
+  "from": "https://polyhaven.com/a/clay_roof_tiles_02",
+  "name": "Clay Roof Tiles 02",
+  "by": [
+   "Amal Kumar"
+  ],
+  "licence": "CC0",
+  "sha256": "dcbc6ff1e2eb9f23dab4d09b35b42e9c33c3289de3f6fdbeb4eddfae6d13015b"
+ },
+ "assets/textures/roof/color.jpg": {
+  "from": "https://polyhaven.com/a/clay_roof_tiles_02",
+  "name": "Clay Roof Tiles 02",
+  "by": [
+   "Amal Kumar"
+  ],
+  "licence": "CC0",
+  "sha256": "363a0a31917dfda29fbe5f08b80439e8be8d9e08b3d2b8c79ef6516b0c18d2c4"
+ },
+ "assets/textures/roof/normal.jpg": {
+  "from": "https://polyhaven.com/a/clay_roof_tiles_02",
+  "name": "Clay Roof Tiles 02",
+  "by": [
+   "Amal Kumar"
+  ],
+  "licence": "CC0",
+  "sha256": "1b4e5026a8c0b2c82f478a0e511d6e44ec2c8e2cd02b9b70695fd036b409bd91"
+ },
+ "assets/textures/sand/arm.jpg": {
+  "from": "https://polyhaven.com/a/coast_sand_01",
+  "name": "Coast Sand 01",
+  "by": [
+   "Rob Tuytel"
+  ],
+  "licence": "CC0",
+  "sha256": "5f2136a2af6c5f6dcfbee9a7e2249f1e6e1e7cd37c6aac0793b335eb41f99f81"
+ },
+ "assets/textures/sand/color.jpg": {
+  "from": "https://polyhaven.com/a/coast_sand_01",
+  "name": "Coast Sand 01",
+  "by": [
+   "Rob Tuytel"
+  ],
+  "licence": "CC0",
+  "sha256": "55f6c3fb747f961494605b76b5e4ad61f41754656186626ebe2e7701005445e0"
+ },
+ "assets/textures/sand/normal.jpg": {
+  "from": "https://polyhaven.com/a/coast_sand_01",
+  "name": "Coast Sand 01",
+  "by": [
+   "Rob Tuytel"
+  ],
+  "licence": "CC0",
+  "sha256": "4b93c1e726165c5ba52154cb48f0d0630aaa98e822ff7048fe05cc98c4ed41ce"
+ },
+ "assets/textures/shutter/arm.jpg": {
+  "from": "https://polyhaven.com/a/wood_shutter",
+  "name": "Wood Shutter",
+  "by": [
+   "Dimitrios Savva"
+  ],
+  "licence": "CC0",
+  "sha256": "5558cffec0f8da9a6606d8de4f6bfd64710e62ad13e80c381d58bd2555d185a0"
+ },
+ "assets/textures/shutter/color.jpg": {
+  "from": "https://polyhaven.com/a/wood_shutter",
+  "name": "Wood Shutter",
+  "by": [
+   "Dimitrios Savva"
+  ],
+  "licence": "CC0",
+  "sha256": "5994e6f70ebb4e7261c5b1bef1b389b22f776fd956fa9b7bcfc9259a164ae352"
+ },
+ "assets/textures/shutter/normal.jpg": {
+  "from": "https://polyhaven.com/a/wood_shutter",
+  "name": "Wood Shutter",
+  "by": [
+   "Dimitrios Savva"
+  ],
+  "licence": "CC0",
+  "sha256": "48a5dce876c601ff386365132302669df9c9e620b768715e904bd3dc7d72d374"
+ }
+}

@@ -1,0 +1,57 @@
+// The game's files: the offline copy (sw.js) lists every one, the version matches everywhere, every picture and model
+// from Poly Haven is the one recorded (SHA-256) with who made it, the credit line is there, and it stays small enough
+// for phones.
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const root = fileURLToPath(new URL('../', import.meta.url));
+const read = f => readFileSync(join(root, f), 'utf8');
+const walk = d => readdirSync(join(root, d)).flatMap(f => statSync(join(root, d, f)).isDirectory() ? walk(d + '/' + f) : [d + '/' + f]);
+const sw = read('sw.js');
+const listed = [...sw.matchAll(/^\s+'([^']+)',?$/gm)].map(m => m[1]);
+
+test('every game file is kept for playing offline', () => {
+  const need = ['index.html', 'manifest.webmanifest', ...walk('src'), 'vendor/three/three.js',
+    ...walk('assets').filter(f => !f.endsWith('.txt') && !f.endsWith('.json'))];
+  for (const f of need) assert.ok(listed.includes(f), `${f} is in sw.js (run node tools/list_files.mjs)`);
+  for (const f of listed) if (f !== './') assert.ok(existsSync(join(root, f)), `${f} exists`);
+});
+
+test('the version is the same everywhere', () => {
+  const { version } = JSON.parse(read('package.json'));
+  assert.match(sw, new RegExp(`const VERSION = '${version.replace(/\./g, '\\.')}'`));
+  assert.match(read('src/ui.js'), new RegExp(`export const VERSION = '${version.replace(/\./g, '\\.')}'`));
+});
+
+test('every texture, sky and model is the recorded free (CC0) file, with its makers named', () => {
+  const sources = JSON.parse(read('assets/SOURCES.json'));
+  const files = [...walk('assets/textures'), ...walk('assets/sky'), ...walk('assets/models')];
+  assert.deepEqual(files.sort(), Object.keys(sources).sort());
+  const notices = read('THIRD-PARTY-NOTICES.txt');
+  for (const [f, s] of Object.entries(sources)) {
+    assert.equal(createHash('sha256').update(readFileSync(join(root, f))).digest('hex'), s.sha256, `${f} is unchanged`);
+    assert.equal(s.licence, 'CC0');
+    assert.match(s.from, /^https:\/\/polyhaven\.com\/a\//);
+    assert.ok(notices.includes(s.name), `${s.name} is in THIRD-PARTY-NOTICES.txt`);
+  }
+});
+
+test('the credit line is in the game', () => {
+  const ui = read('src/ui.js');
+  assert.ok(ui.includes("'Made by Azeem, with Claude and '"));
+  assert.ok(ui.includes("h('span', { class: 'heart' }, '♥')"));
+});
+
+test('it stays small enough to load on a phone', () => {
+  const total = listed.filter(f => f !== './').reduce((n, f) => n + statSync(join(root, f)).size, 0);
+  assert.ok(total < 24 * 1024 * 1024, `all files together: ${(total / 1048576).toFixed(1)} MB`);
+});
+
+test('her face pictures are the ones from her sheet, as in INAARA', () => {
+  const faces = readdirSync(join(root, 'assets/faces')).sort();
+  assert.deepEqual(faces, ['full-front.png', 'head-excited.png', 'head-happy.png', 'head-playful.png', 'head-shy.png', 'head-surprised.png', 'portrait.png']);
+});
