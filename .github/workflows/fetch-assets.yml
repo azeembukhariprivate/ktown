@@ -1,0 +1,38 @@
+name: Fetch free assets
+
+# Run by hand: downloads free (CC0) Poly Haven files and puts them in a temporary pre-release named "asset-staging",
+# so they can be looked at, checked and added to assets/ by hand. The game never downloads anything itself.
+on:
+  workflow_dispatch:
+    inputs:
+      list:
+        description: '"catalog", or Poly Haven ids with a size, like "red_laterite_soil_stones:1k,qwantani_noon:2k"'
+        required: true
+      remove:
+        description: 'Only remove the temporary pre-release'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Download
+        if: ${{ !inputs.remove }}
+        env:
+          LIST: ${{ inputs.list }}
+        run: python3 tools/fetch_polyhaven.py "$LIST" out
+      - name: Put them in the temporary pre-release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REMOVE: ${{ inputs.remove }}
+        run: |
+          gh release delete asset-staging --yes --cleanup-tag || true
+          if [ "$REMOVE" = "true" ]; then exit 0; fi
+          (cd out && zip -qr ../picked.zip .)
+          gh release create asset-staging picked.zip --prerelease --target "$GITHUB_SHA" \
+            --title "Picked files (temporary)" --notes "Temporary: files fetched for picking. Removed when done."
