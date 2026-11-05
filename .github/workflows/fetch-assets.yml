@@ -1,12 +1,13 @@
 name: Fetch free assets
 
-# Run by hand: downloads free (CC0) Poly Haven files and puts them in a temporary pre-release named "asset-staging",
+# Run by hand: downloads free (CC0) Poly Haven files, or free (public domain / CC0) sound recordings from Wikimedia
+# Commons ("search:..." or "get:..."), and puts them in a temporary pre-release named "asset-staging",
 # so they can be looked at, checked and added to assets/ by hand. The game never downloads anything itself.
 on:
   workflow_dispatch:
     inputs:
       list:
-        description: '"catalog", or Poly Haven ids with a size, like "red_laterite_soil_stones:1k,qwantani_noon:2k"'
+        description: '"catalog", Poly Haven ids with a size ("red_laterite_soil_stones:1k,..."), or sounds: "search:crow;bell" / "get:File:A.ogg|File:B.wav"'
         required: true
       remove:
         description: 'Only remove the temporary pre-release'
@@ -25,7 +26,11 @@ jobs:
         if: ${{ !inputs.remove }}
         env:
           LIST: ${{ inputs.list }}
-        run: python3 tools/fetch_polyhaven.py "$LIST" out
+        run: |
+          case "$LIST" in
+            search:*|get:*) python3 tools/fetch_commons.py "$LIST" out ;;
+            *) python3 tools/fetch_polyhaven.py "$LIST" out ;;
+          esac
       - name: Put them in the temporary pre-release
         env:
           GH_TOKEN: ${{ github.token }}
