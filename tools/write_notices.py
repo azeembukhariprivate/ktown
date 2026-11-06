@@ -24,13 +24,15 @@ lines = ['KTOWN uses these things made by others. Thank you.', '',
          '  Copyright 2010-2026 three.js authors. MIT License (vendor/three/LICENSE).', '',
          'Fredoka font (assets/fonts/Fredoka.ttf)',
          '  Copyright 2016 The Fredoka Project Authors. SIL Open Font License, Version 1.1 (assets/fonts/OFL.txt).', '',
+         'Noto Sans Malayalam font (assets/fonts/NotoSansMalayalam.woff2)',
+         '  Copyright 2022 The Noto Project Authors. SIL Open Font License, Version 1.1 (assets/fonts/NotoSansMalayalam-OFL.txt).', '',
          'Textures, skies and models from Poly Haven (https://polyhaven.com), all CC0 (public domain): free to use for anything.',
          "Each file's source and SHA-256 is in assets/SOURCES.json. They were made smaller for the game (tools/prepare_assets.py).", '']
 lines += group('pictures')
 lines += ['', 'Sounds: recordings from Wikimedia Commons (https://commons.wikimedia.org), each public domain or CC0: free to use',
           'for anything. Cut, made mono and evened out in loudness for the game (tools/prepare_sounds.py).', '']
 lines += group('sounds')
-lines += ['', "Inaara's face pictures (assets/faces) are from her own picture sheet, shared by her parent for this game.",
-          "Everything else (the houses, shops, palms, vehicles, people and Inaara's body) is made by the game's own code."]
+lines += ['', "Everything else (the houses, shops, palms, vehicles, the people and the four children with their made-up faces)",
+          "is made by the game's own code."]
 open(os.path.join(ROOT, 'THIRD-PARTY-NOTICES.txt'), 'w').write('\n'.join(lines) + '\n')
 print('written')

@@ -52,7 +52,11 @@ test('it stays small enough to load on a phone', () => {
   assert.ok(total < 24 * 1024 * 1024, `all files together: ${(total / 1048576).toFixed(1)} MB`);
 });
 
-test('her face pictures are the ones from her sheet, as in INAARA', () => {
-  const faces = readdirSync(join(root, 'assets/faces')).sort();
-  assert.deepEqual(faces, ['full-front.png', 'head-excited.png', 'head-happy.png', 'head-playful.png', 'head-shy.png', 'head-surprised.png', 'portrait.png']);
+test('no real photos: every face is made up by the game', () => {
+  assert.equal(existsSync(join(root, 'assets/faces')), false, 'no face pictures');
+  const pictures = walk('assets').filter(f => /\.(png|jpe?g|webp)$/i.test(f));
+  // The only pictures are the app icons (made from the game's own drawing), and textures and skies from Poly Haven.
+  for (const f of pictures) assert.ok(f.startsWith('assets/icons/') || f.startsWith('assets/textures/') || f.startsWith('assets/sky/'), f);
+  const code = walk('src').map(read).join('\n');
+  assert.ok(!code.includes('assets/faces'), 'nothing in the game asks for a face picture');
 });

@@ -1,0 +1,30 @@
+<!doctype html>
+<!-- The four children together: used to make the app icons (tools/make_icons.mjs) and to look at them.
+     ?face=happy  ?view=icon (just their faces, on marigold)  -->
+<html><head><meta charset="utf-8"><style>html,body{margin:0;background:#ffb347}canvas{display:block}</style></head>
+<body><canvas id="c"></canvas><script type="module">
+import * as THREE from '../vendor/three/three.js';
+import { Child } from '../src/children.js';
+const q = new URLSearchParams(location.search), view = q.get('view') || 'all', face = q.get('face') || 'happy';
+const W = Number(q.get('w') || 1200), H = Number(q.get('h') || 600);
+const r = new THREE.WebGLRenderer({ canvas: c, antialias: true, preserveDrawingBuffer: true, alpha: view === 'cut' });
+r.setSize(W, H, false);
+r.outputColorSpace = THREE.SRGBColorSpace;
+r.toneMapping = THREE.ACESFilmicToneMapping;
+const s = new THREE.Scene();
+if (view !== 'cut') s.background = new THREE.Color(view === 'icon' ? '#ff9f1c' : '#ffcf8a');
+s.add(new THREE.HemisphereLight('#fff6e6', '#8a6a4a', 2.2));
+const d = new THREE.DirectionalLight('#ffffff', 2.4); d.position.set(2, 4, 5); s.add(d);
+const kids = ['atyb', 'inaara', 'aiza', 'aydin'], xs = [-0.75, -0.22, 0.25, 0.72];
+kids.forEach((k, i) => {
+  const ch = new Child(k);
+  ch.update(0.1, { x: xs[i], y: 0, z: 0, heading: 0.25 - i * 0.12, state: 'idle', vx: 0, vz: 0 }, { face: (q.get('faces') || '').split(',')[i] || face });
+  ch.head.rotation.y = 0;
+  s.add(ch.root);
+});
+const cam = new THREE.PerspectiveCamera(view === 'icon' ? 22 : 30, W / H, 0.1, 50);
+if (view === 'icon') { cam.fov = 24 / Number(q.get('zoom') || 1); cam.updateProjectionMatrix(); cam.position.set(0, 1.2, 4.6); cam.lookAt(0, 1.02, 0); }
+else { cam.position.set(0, 0.95, 4.2); cam.lookAt(0, 0.72, 0); }
+r.render(s, cam);
+window.done = true;
+</script></body></html>

@@ -51,6 +51,7 @@ export function buildTown3D(T, assets, scene, { quality = 'high' } = {}) {
       paving: ['paving', { scale: 2.4, tint: '#d8d2c8' }, 0.012],
       laterite: ['laterite', { scale: 2.6 }, 0.008],
       yardpath: ['laterite', { scale: 2.0, tint: '#e0b9a0' }, 0.01],
+      stone: ['paving', { scale: 1.2, tint: '#6b6e72' }, 0.006],
       road: ['road', { scale: 4.5, tint: '#9a9a9a' }, 0.016]
     };
     const mats = {};
@@ -61,7 +62,7 @@ export function buildTown3D(T, assets, scene, { quality = 'high' } = {}) {
       mat.polygonOffsetUnits = -2 - lift * 400;
       mats[k] = [mat, lift];
     }
-    const order = ['sand', 'paving', 'laterite', 'yardpath', 'road'];
+    const order = ['sand', 'stone', 'paving', 'laterite', 'yardpath', 'road'];
     for (const k of order) for (const p of T.ground.filter(g => g.type === k))
       B.add(groundGeo(p.x0, p.z0, p.x1, p.z1, mats[k][1]), mats[k][0], null, { shadow: false });
 
@@ -91,6 +92,10 @@ export function buildTown3D(T, assets, scene, { quality = 'high' } = {}) {
   const r = rng(77);
 
   for (const h of T.houses) {
+    if (h.home) {
+      drawHome(B, h, assets, glow, root);
+      continue;
+    }
     const rot = rotOf(h.facing);
     const M = (x, y, z) => place(h.x, 0, h.z, rot).multiply(place(x, y, z));
     const W = h.w, D = h.d, H = h.storeys === 2 ? 6.0 : 3.0, sit = h.sit;
@@ -376,4 +381,130 @@ export function buildTown3D(T, assets, scene, { quality = 'high' } = {}) {
   B.build(root);
   const plants = addPlants(root, assets, T.palms, T.bananas, { far: quality === 'low' ? 110 : 140 });
   return { root, glow, lamps, plants };
+}
+
+/**
+ * Inaara's home, after the family's photo (layout.js addHome has the plan): two storeys, white walls with a dark band
+ * at the bottom, two hip roofs of brown clay tiles above meeting at an angle, a wide tiled roof round the ground
+ * floor, a balcony with a white and wood-brown railing, a sit-out with turned wooden pillars and curved steps on the
+ * left, a car porch with a round white pillar on the right, wooden doors and windows.
+ */
+function drawHome(B, h, assets, glow, root) {
+  const rot = rotOf(h.facing);
+  // Local frame: origin in the middle of the walls, +z towards the gate, `R(u)` is u metres to your right as you
+  // face the house.
+  const M = (x, y, z) => place(h.x, 0, h.z, rot).multiply(place(x, y, z));
+  // Facing the house from the gate you look along -z, so your right is +x in this frame.
+  const R = u => u;
+  const W = h.w, D = h.d, F = h.front;
+  const white = assets.plain('#f3f3ef', { rough: 0.85 });
+  const band = assets.plain('#2b2d31', { rough: 0.7 });
+  const tiles = assets.material('roof', { scale: 1.4, tint: '#a8655a' });
+  const soffit = assets.plain('#f2f2ee', { rough: 0.8 });
+  const wood = assets.material('planks', { scale: 1.0, tint: '#7a4528' });
+  const woodLight = assets.material('planks', { scale: 1.0, tint: '#a8653c' });
+  const shutter = assets.material('shutter', { scale: 1.1, tint: '#8a4f2c' });
+  const granite = assets.plain('#2a2a2c', { rough: 0.25 });
+  const floor = assets.material('paving', { scale: 1.0, tint: '#d8d6d0' });
+  const H1 = 3.2, H2 = 3.0;
+  // Ground floor and its dark band.
+  B.add(boxGeo(W, H1, D), white, M(0, H1 / 2, 0));
+  B.add(boxGeo(W + 0.06, 0.55, D + 0.06), band, M(0, 0.275, 0));
+  // Upper floor: a little narrower and set back from the front.
+  const W2 = W - 2, D2 = D - 1.4;
+  B.add(boxGeo(W2, H2, D2), white, M(0, H1 + H2 / 2, -0.5));
+  // The wide tiled roof round the ground floor: slopes from the upper walls out past the walls and over the front.
+  const inner = { x0: -W2 / 2, x1: W2 / 2, z0: -0.5 - D2 / 2, z1: -0.5 + D2 / 2 };
+  const outer = { x0: -W / 2 - 0.9, x1: W / 2 + 0.9, z0: -D / 2 - 0.9, z1: D / 2 + F + 0.6 };
+  const yIn = H1 + 0.55, yOut = H1 - 0.35;
+  const P = (x, y, z) => [x, y, z];
+  const skirt = polyGeo([
+    { pts: [P(outer.x0, yOut, outer.z1), P(outer.x1, yOut, outer.z1), P(inner.x1, yIn, inner.z1), P(inner.x0, yIn, inner.z1)], uDir: [1, 0, 0] },
+    { pts: [P(outer.x1, yOut, outer.z0), P(outer.x0, yOut, outer.z0), P(inner.x0, yIn, inner.z0), P(inner.x1, yIn, inner.z0)], uDir: [-1, 0, 0] },
+    { pts: [P(outer.x1, yOut, outer.z1), P(outer.x1, yOut, outer.z0), P(inner.x1, yIn, inner.z0), P(inner.x1, yIn, inner.z1)], uDir: [0, 0, -1] },
+    { pts: [P(outer.x0, yOut, outer.z0), P(outer.x0, yOut, outer.z1), P(inner.x0, yIn, inner.z1), P(inner.x0, yIn, inner.z0)], uDir: [0, 0, 1] }
+  ]);
+  B.add(skirt, tiles, M(0, 0, 0));
+  B.add(polyGeo([{ pts: [P(outer.x0, yOut - 0.02, outer.z0), P(outer.x1, yOut - 0.02, outer.z0), P(outer.x1, yOut - 0.02, outer.z1), P(outer.x0, yOut - 0.02, outer.z1)], uDir: [1, 0, 0] }]), soffit, M(0, 0, 0));
+  // A white fascia and gutter along the eaves.
+  B.add(boxGeo(outer.x1 - outer.x0, 0.14, 0.12), soffit, M(0, yOut - 0.05, outer.z1));
+  // The balcony: the upper floor's front opens onto a terrace over the sit-out and porch, with a railing.
+  const balZ = -0.5 + D2 / 2, balD = D / 2 + F - 0.2 - balZ;
+  B.add(boxGeo(W2 + 0.4, 0.2, balD), floor, M(0, H1 + 0.6, balZ + balD / 2));
+  const railZ = balZ + balD;
+  B.add(boxGeo(W2 + 0.4, 0.95, 0.12), white, M(0, H1 + 1.18, railZ));
+  for (const y of [H1 + 0.68, H1 + 1.66]) B.add(boxGeo(W2 + 0.5, 0.12, 0.18), woodLight, M(0, y, railZ));
+  for (const sx of [-1, 1]) B.add(boxGeo(0.12, 0.95, balD), white, M(sx * (W2 / 2 + 0.14), H1 + 1.18, balZ + balD / 2));
+  // Wood-brown posts in the railing, and dark round grilles.
+  for (let i = -3; i <= 3; i++) B.add(boxGeo(0.08, 0.85, 0.16), woodLight, M(i * (W2 / 7), H1 + 1.18, railZ));
+  for (const u of [-W2 / 3, W2 / 3]) for (const dx of [-0.18, 0, 0.18]) {
+    const ring = new THREE.TorusGeometry(0.08, 0.015, 6, 16);
+    B.add(ring, band, M(R(u) + dx, H1 + 1.2, railZ + 0.07));
+  }
+  // Two hip roofs above, meeting at an angle: one over each half of the upper floor.
+  for (const [cx, w, d] of [[R(-W2 / 4), W2 / 2 + 1.2, D2 + 1.6], [R(W2 / 4), W2 / 2 + 1.6, D2 + 1.2]]) {
+    const { roof, under } = hipRoof(w, d, 1.6);
+    B.add(roof, tiles, M(cx, H1 + H2, -0.5));
+    B.add(under, soffit, M(cx, H1 + H2 - 0.01, -0.5));
+  }
+  // Windows (wooden shutters in brown frames) and doors.
+  const win = (x, y, z, ry, w = 1.2, hh = 1.3) => {
+    const m = M(x, y, z).multiply(place(0, 0, 0, ry));
+    B.add(boxGeo(w + 0.16, hh + 0.16, 0.06), wood, m);
+    B.add(boxGeo(w, hh, 0.08), shutter, m);
+  };
+  win(R(-4.6), H1 + 1.6, -0.5 + D2 / 2 + 0.04, 0);
+  win(R(3.2), H1 + 1.6, -0.5 + D2 / 2 + 0.04, 0, 1.6);
+  B.add(boxGeo(1.0, 2.1, 0.08), wood, M(R(-0.8), H1 + 1.05 + 0.6, -0.5 + D2 / 2 + 0.04));
+  for (const sx of [-1, 1]) {
+    win(sx * (W / 2 + 0.035), 1.7, 0.8, sx * Math.PI / 2);
+    win(sx * (W2 / 2 + 0.035), H1 + 1.6, -0.8, sx * Math.PI / 2);
+  }
+  win(R(5.2), 1.7, D / 2 + 0.035, 0);
+  win(R(-2.2), 1.7, -D / 2 - 0.035, Math.PI);
+  // The big wooden double door in the sit-out.
+  B.add(boxGeo(2.0, 2.5, 0.1), wood, M(R(-3.8), 0.45 + 1.25, D / 2 + 0.05));
+  B.add(boxGeo(0.04, 2.4, 0.12), granite, M(R(-3.8), 0.45 + 1.2, D / 2 + 0.06));
+  // The sit-out: a light floor, curved granite steps, turned wooden pillars, low wooden railings with curves.
+  const sitX = R(-3.8);
+  B.add(boxGeo(6.4, 0.45, F - 0.7), floor, M(sitX, 0.225, D / 2 + (F - 0.7) / 2));
+  const st1 = new THREE.CylinderGeometry(1.6, 1.6, 0.22, 24, 1, false, -Math.PI / 2, Math.PI);
+  B.add(st1, granite, M(sitX, 0.11, D / 2 + F - 0.7).multiply(new THREE.Matrix4().makeScale(1, 1, 0.45)));
+  const turned = [];
+  for (let i = 0; i <= 12; i++) {
+    const t = i / 12;
+    turned.push(new THREE.Vector2(0.13 + 0.05 * Math.sin(t * Math.PI * 3) ** 2 + (t < 0.08 || t > 0.92 ? 0.05 : 0), t * 2.25));
+  }
+  for (const u of [-6.7, -0.9]) B.add(new THREE.LatheGeometry(turned, 14), woodLight, M(R(u), 0.45, D / 2 + F - 0.95));
+  for (const [u0, u1] of [[-7.0, -5.3], [-2.3, -0.6]]) {
+    const cxr = R((u0 + u1) / 2), len = u1 - u0;
+    B.add(boxGeo(len, 0.08, 0.1), woodLight, M(cxr, 1.15, D / 2 + F - 0.95));
+    for (let k = 0; k < 4; k++) {
+      const arc = new THREE.TorusGeometry(0.22, 0.025, 6, 12, Math.PI);
+      B.add(arc, woodLight, M(cxr - len / 2 + 0.3 + k * (len - 0.6) / 3, 0.62, D / 2 + F - 0.95));
+    }
+  }
+  // The car porch: the round white pillar at its corner (and her bicycle, which the game puts there).
+  B.add(new THREE.CylinderGeometry(0.2, 0.2, H1 - 0.3, 16), soffit, M(R(6.6), (H1 - 0.3) / 2, D / 2 + F - 0.4));
+  B.add(boxGeo(5.6, 0.04, F), floor, M(R(3.6), 0.02, D / 2 + F / 2));
+  // White yard walls on a dark base, and square gate posts by the wide gate.
+  for (const w of h.walls) {
+    const lx = w.x1 - w.x0, lz = w.z1 - w.z0, x = (w.x0 + w.x1) / 2, z = (w.z0 + w.z1) / 2;
+    if (lx < 0.3 && lz < 0.3) continue;
+    B.add(boxGeo(lx, 0.35, lz), band, place(x, 0.175, z));
+    B.add(boxGeo(lx, 0.75, lz), white, place(x, 0.725, z));
+    B.add(boxGeo(lx + 0.06, 0.1, lz + 0.06), soffit, place(x, 1.15, z));
+  }
+  const [gx, gz] = h.gate, [fx, fz] = FACING[h.facing];
+  const ax = fz !== 0 ? 1 : 0, az = fx !== 0 ? 1 : 0;
+  for (const sg of [-1, 1]) {
+    const px = gx + ax * sg * h.gateWidth - fx * 0.125, pz = gz + az * sg * h.gateWidth - fz * 0.125;
+    B.add(boxGeo(0.6, 1.6, 0.6), white, place(px, 0.8, pz));
+    B.add(boxGeo(0.72, 0.12, 0.72), band, place(px, 1.66, pz));
+  }
+  // A lamp by the door that lights up in the evening.
+  const lamp = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.25, 0.08), assets.plain('#fff5d6', { rough: 0.3, emissive: '#ffe2a8' }));
+  lamp.applyMatrix4(M(R(-1.9), 2.6, D / 2 + 0.06));
+  root.add(lamp);
+  glow.push({ mesh: lamp });
 }

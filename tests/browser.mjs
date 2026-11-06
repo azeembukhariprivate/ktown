@@ -137,13 +137,101 @@ try {
     await pc.keyboard.press('KeyE');
     await pc.waitForSelector('.places button', { timeout: 60000 });
     await shot(pc, '06-where-to');
-    await pc.click('.places button:text-is("The Market")');
+    const before = (await pc.evaluate(() => ktown.game.jobs.progress.coins));
+    await pc.click('.places button:has-text("The Market")');
     await pc.waitForFunction(() => ktown.state().mode === 'auto', null, { timeout: 60000 });
     await wait(3000);
     await shot(pc, '07-autorickshaw');
     await pc.waitForFunction(() => ktown.state().mode === 'foot', null, { timeout: 600000, polling: 500 });
     const s = await state();
     assert.ok(Math.hypot(s.x - -50, s.z - -4.5) < 9, `dropped near the market (${s.x.toFixed(1)}, ${s.z.toFixed(1)})`);
+    const after = await pc.evaluate(() => ktown.game.jobs.progress.coins);
+    assert.ok(after < before && after >= 0, `the ride cost coins (${before} to ${after})`);
+  });
+
+  const coins = () => pc.evaluate(() => ktown.game.jobs.progress.coins);
+  const promptIs = (start, t = 120000) => pc.waitForFunction(x => (ktown.state().prompt || '').startsWith(x), start, { timeout: t, polling: 200 });
+
+  await step('a job: Aydin\'s lost football, with speech bubbles in Malayalam', async () => {
+    await pc.evaluate(() => { const k = ktown.game.jobs.kids.aydin; ktown.teleport(k.x + 1.6, k.z, -Math.PI / 2); ktown.look(Math.PI / 2 + 0.5, 0.2, 3.6); });
+    await promptIs('Talk to Aydin');
+    await pc.keyboard.press('KeyE');
+    await pc.waitForFunction(() => ktown.game.jobs.active, null, { timeout: 60000 });
+    await pc.waitForSelector('.bubble .ml', { timeout: 60000 });
+    const ml = await pc.textContent('.bubble .ml');
+    assert.ok(/[\u0D00-\u0D7F]/.test(ml), `the bubble is in Malayalam: ${ml}`);
+    await wait(1500);
+    await shot(pc, '15-job');
+    const a = await coins();
+    await pc.evaluate(() => { const t = ktown.game.jobs.thing; ktown.teleport(t.x + 1.2, t.z, -Math.PI / 2); });
+    await promptIs('Pick up');
+    await pc.keyboard.press('KeyE');
+    await pc.waitForFunction(() => ktown.game.jobs.active.picked, null, { timeout: 60000 });
+    await pc.evaluate(() => { const k = ktown.game.jobs.kids.aydin; ktown.teleport(k.x + 1.6, k.z, -Math.PI / 2); });
+    await promptIs('Give back');
+    await pc.keyboard.press('KeyE');
+    await pc.waitForFunction(() => !ktown.game.jobs.active, null, { timeout: 60000 });
+    assert.ok(await coins() >= a + 15, 'paid for the job');
+    assert.deepEqual(await pc.evaluate(() => ktown.game.jobs.progress.p.done), ['ball1']);
+  });
+
+  await step('a delivery: the tea shop snacks to Temple Road', async () => {
+    await pc.evaluate(() => { const v = ktown.game.jobs.posOf('velu'); ktown.teleport(v.x, v.z + 1.5, Math.PI); });
+    await promptIs('Talk to');
+    await pc.keyboard.press('KeyE');
+    await pc.waitForFunction(() => ktown.game.jobs.active, null, { timeout: 60000 });
+    const a = await coins();
+    await pc.evaluate(() => { const t = ktown.game.jobs.active.job.to; ktown.teleport(t.x + 1, t.z, 0); });
+    await promptIs('Hand over');
+    await pc.keyboard.press('KeyE');
+    await pc.waitForFunction(() => !ktown.game.jobs.active, null, { timeout: 60000 });
+    assert.ok(await coins() >= a + 20, 'paid for the delivery');
+  });
+
+  await step('a race with Atyb on bicycles', async () => {
+    await pc.evaluate(() => { const k = ktown.game.jobs.kids.atyb; ktown.teleport(k.x + 1.5, k.z, -Math.PI / 2); });
+    await promptIs('Talk to Atyb');
+    await pc.keyboard.press('KeyE');
+    await pc.waitForFunction(() => ktown.game.jobs.active, null, { timeout: 60000 });
+    // On her bicycle, to the start line.
+    await pc.evaluate(() => {
+      const g = ktown.game, st = g.jobs.P.races[0].start;
+      g.bike.x = st.x; g.bike.z = st.z;
+      ktown.teleport(st.x - 1, st.z, 0);
+    });
+    await promptIs('Get on');
+    await pc.keyboard.press('KeyE');
+    await promptIs('Ready, steady');
+    await pc.keyboard.press('KeyE');
+    await pc.waitForFunction(() => ktown.game.jobs.active.stage === 'go', null, { timeout: 120000 });
+    await shot(pc, '16-race');
+    const a = await coins();
+    // Ride the course (moved along it, as drawing is too slow here to pedal it).
+    const pts = await pc.evaluate(() => ktown.game.jobs.P.races[0].pts);
+    for (const [x, z] of pts.slice(1)) {
+      await pc.evaluate(([x, z]) => { const b = ktown.game.bike; b.x = x; b.z = z; }, [x, z]);
+      await wait(300);
+    }
+    await pc.waitForFunction(() => !ktown.game.jobs.active, null, { timeout: 60000 });
+    assert.ok(await coins() >= a + 25, 'won the race');
+    await pc.keyboard.press('KeyE');
+  });
+
+  await step('the big map, and buying a flower clip at the Fancy Store', async () => {
+    await pc.keyboard.press('KeyM');
+    await pc.waitForSelector('.mapscreen', { timeout: 60000 });
+    await shot(pc, '17-map');
+    await pc.keyboard.press('KeyM');
+    await pc.evaluate(() => { const s = ktown.game.shopSpots().find(s => s.name === 'Fancy Store'); ktown.teleport(s.x, s.z, Math.PI); });
+    await promptIs('Look in');
+    await pc.keyboard.press('KeyE');
+    await pc.waitForSelector('.shoplist', { timeout: 60000 });
+    const a = await coins();
+    await pc.click('.shoplist button:has-text("flower clip")');
+    assert.equal(await coins(), a - 25, 'paid for it');
+    assert.ok(await pc.evaluate(() => ktown.game.jobs.progress.p.wearing.includes('flower')), 'she wears it');
+    await shot(pc, '18-shop');
+    await pc.click('.card button.main');
   });
 
   await step('every sound loads', async () => {

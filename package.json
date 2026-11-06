@@ -1,6 +1,6 @@
 {
   "name": "ktown",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "description": "KTOWN: walk around a little Kerala town with Inaara. A free 3D game that plays in the browser.",
   "type": "module",

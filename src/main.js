@@ -2,10 +2,11 @@
 import * as THREE from '../vendor/three/three.js';
 import { Assets } from './assets.js';
 import { Input } from './input.js';
-import { Game } from './game.js';
+import { Game, CAMERA } from './game.js';
 import { UI } from './ui.js';
 import { load, store } from './save.js';
 import { TownAudio, SOUNDS } from './audio.js';
+import { TownMap } from './map.js';
 
 const canvas = document.getElementById('game');
 const ui = new UI(document.getElementById('ui'));
@@ -74,12 +75,20 @@ ui.apply = key => {
 };
 
 function play() {
-  if (game.screen === 'title') game.yaw = game.walker.heading + Math.PI; // the camera behind her again
+  if (game.screen === 'title') {
+    // The camera behind her again, and her friends back across the lane.
+    game.yaw = game.walker.heading + Math.PI;
+    game.pitch = CAMERA.pitch;
+    game.dist = CAMERA.dist;
+    game.leaveTitle();
+  }
   game.screen = 'play';
   input.enabled = true;
   ui.hud(input.touchMode || touch);
   ui.prompt(game.prompt);
   ui.riding(game.mode === 'bike');
+  ui.coins(game.jobs.progress.coins);
+  ui.job(game.jobs.active ? game.jobs.active.job.title : null);
   game.checkArea();
   ui.toast(game.area || 'KTOWN');
   if (!save.seenHelp) {
@@ -92,7 +101,8 @@ function pause() {
   if (!game || game.screen !== 'play') return;
   game.screen = 'paused';
   input.releasePointer();
-  ui.paused();
+  const a = game.jobs.active;
+  ui.paused({ flowers: game.jobs.progress.flowers, job: a && a.job.title });
 }
 ui.on('play', play);
 ui.on('pause', pause);
@@ -102,11 +112,19 @@ ui.on('resume', () => {
 });
 ui.on('title', () => {
   game.screen = 'title';
+  game.titlePose();
   ui.title();
 });
 ui.on('jump', () => (input.jumpPressed = true));
 ui.on('action', () => (input.actionPressed = true));
 ui.on('bell', () => (input.bellPressed = true));
+let map = null;
+ui.on('bigmap', () => {
+  if (!game || !map || ui.screens.map) return;
+  input.releasePointer();
+  ui.bigMap(map, game);
+});
+ui.on('giveup', () => game && game.jobs.giveUp());
 
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) audio.suspend();
@@ -115,6 +133,11 @@ document.addEventListener('visibilitychange', () => {
 });
 addEventListener('keydown', e => {
   if (!game) return;
+  if (e.code === 'KeyM' && game.screen === 'play') {
+    if (ui.screens.map) ui.screens.map.querySelector('.mapbuttons .main').click();
+    else ui.fire('bigmap');
+    return;
+  }
   if ((e.code === 'KeyP' || (e.code === 'Escape' && !input.locked)) && game.screen === 'play') pause();
   else if ((e.code === 'KeyP' || e.code === 'Escape') && game.screen === 'paused' && !Object.keys(ui.screens).some(k => k !== 'paused')) {
     ui.unpause();
@@ -130,7 +153,20 @@ function loop(now) {
   last = now;
   if (game) {
     game.frame(dt);
-    if (game.screen === 'play') ui.stick(input.stick);
+    if (game.screen === 'play') {
+      ui.stick(input.stick);
+      // Speech bubbles over people's heads, and the small map.
+      const w = innerWidth, h = innerHeight, v = new THREE.Vector3();
+      ui.bubbles(game.jobs.bubbleList(), pos => {
+        v.set(pos.x, pos.y, pos.z);
+        const d = v.distanceTo(game.camera.position);
+        if (d > 32) return null;
+        v.project(game.camera);
+        if (v.z > 1 || Math.abs(v.x) > 1.1 || Math.abs(v.y) > 1.1) return null;
+        return { x: (v.x + 1) / 2 * w, y: (1 - v.y) / 2 * h - 6 };
+      });
+      if (ui.mini && (frames % 3 === 0)) map.drawMini(ui.mini, game);
+    }
     if (input.take && game.screen === 'play') {
       const pad = input.pad();
       if (pad && pad.buttons[9] && pad.buttons[9].pressed && !loop.padStart) pause();
@@ -161,8 +197,23 @@ async function start() {
     ui.prompt(p);
     ui.riding(game.mode === 'bike');
   };
-  game.onToast = text => ui.toast(text);
+  game.onToast = (text, secs) => ui.toast(text, secs);
+  map = new TownMap(game.plan);
+  game.onCoins = (n, d) => ui.coins(n, d);
+  game.onJob = text => ui.job(text);
+  game.onFinale = () => ui.finale();
+  game.onShop = (shop, items, done) => {
+    input.releasePointer();
+    ui.shop(shop, items, game, done);
+  };
+  // Progress is kept in the browser, at most once a second.
+  let saveTimer = null;
+  game.onSave = () => {
+    if (saveTimer) return;
+    saveTimer = setTimeout(() => { saveTimer = null; store(save); }, 1000);
+  };
   game.onMenu = (list, done) => {
+    ui.pickOnMap = d2 => ui.bigMap(map, game, { pick: true }, p => d2(p ? { name: 'your map pin', x: p.x, z: p.z } : null));
     input.releasePointer();
     ui.places(list, done);
   };

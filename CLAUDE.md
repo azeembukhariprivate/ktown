@@ -1,8 +1,7 @@
 # KTOWN
 
-Walk, ride and take autorickshaws around a little Kerala town with Inaara: a free 3D game for the browser, in the
-spirit of open-world games but child-friendly (no weapons, no crime, nobody gets hurt). Her face comes from her real picture sheet (as in INAARA),
-shared by her parent for this public game.
+Walk, ride and take autorickshaws around a little Kerala town with Inaara and her friends Atyb, Aydin and Aiza: a free
+3D game for the browser, in the spirit of open-world games but child-friendly (no weapons, no crime, nobody gets hurt).
 Part of the KUDU family of free, open-source (MIT) apps by Azeem Bukhari.
 
 ## Working with Azeem (the owner)
@@ -23,10 +22,15 @@ Part of the KUDU family of free, open-source (MIT) apps by Azeem Bukhari.
 
 - Plain JavaScript modules in `src/`, no build step. 3D by three.js 0.186.0, bundled once into `vendor/three/three.js`
   (`tools/three-entry.js` says how). Drawn on one canvas; the screens over it are web page parts (`src/ui.js`).
-- Inaara's faces: use only the pictures from her sheet (`assets/faces`, same as INAARA); never draw, change or make up
-  her face. `src/hero.js` shows them on the front of her head; her body is shapes in the sheet's colours.
-- Her head (`src/hero.js`): the picture on a gently rounded face (`faceGeo`, not a ball) with a bob of hair behind it
-  (`hairGeo`, a drawn strand texture), tucked behind her chin.
+- No real photos anywhere (Azeem's choice in 0.3): every face is made up and drawn by the game, also on the title and
+  the icons (`tools/kids.html` + `tools/make_icons.mjs`). A test checks no face pictures come back.
+- The four children (`src/children.js`, `Child`): Inaara (about 5, bob), Atyb (about 9, red T-shirt, cap backwards,
+  races), Aydin (about 7, curly hair, striped T-shirt, football), Aiza (about 3, pigtails, pink frock, toy rabbit).
+  Faces are painted on a canvas per expression (`paintFace`: happy, excited, surprised, shy, playful) on a rounded face
+  shell. The three are siblings living across Pond Lane from Inaara (`T.friends`).
+- Her home is like the family's photo but shows nothing that could tell where it is (no house number or name): two
+  storeys, white, clay-tile hip roofs, balcony, sit-out with turned pillars, a porch with only her bicycle
+  (`addHome` in layout.js, `drawHome` in town3d.js).
 - Free assets: textures, skies and models from Poly Haven (CC0); sounds from Wikimedia Commons (public domain or CC0
   only). This container can reach neither, so the `fetch-assets.yml` workflow (run by hand) downloads them into a
   temporary pre-release `asset-staging` (`tools/fetch_polyhaven.py`, `tools/fetch_commons.py`: "search:..." lists
@@ -54,10 +58,17 @@ Part of the KUDU family of free, open-source (MIT) apps by Azeem Bukhari.
   bike, auto) and the prompt (E / the button / Y). `src/audio.js` plays the sounds (WebAudio, from where they are).
 - Plays offline: `sw.js` lists every file (`node tools/list_files.mjs` writes the list), and its `VERSION` must match
   `package.json` and `src/ui.js` (a test checks).
-- Settings are kept in the browser (`src/save.js`, key `ktown-save-v1`). Nothing is sent anywhere.
+- Jobs (0.3): `src/jobs.js` is plain data and sums (the 15 set jobs in order, everyday jobs, shop `ITEMS`, ride fares
+  with a free ride home when she can't pay, `Progress`: coins never below zero), tested by `tests/jobs.test.mjs` (every
+  job can be done on foot or by bicycle, races winnable by a careful rider). `src/jobplay.js` runs them in the game
+  (givers with a gold marker, a light over where to go, the kids, the goat and cat, races, catch, coins lying about,
+  the garland finale). `src/map.js` is the small and big map; `src/lines.js` holds every Malayalam line with its
+  English meaning (Azeem checks these), shown in Noto Sans Malayalam (OFL).
+- Progress and settings are kept in the browser (`src/save.js`, key `ktown-save-v1`), saved by itself. Nothing is sent
+  anywhere.
 
 ```
-npm test               # movement, the town plan, roads and traffic, rides, the files
+npm test               # movement, the town plan, roads and traffic, rides, jobs and coins, the files
 npm run test:browser   # plays it in Chromium (slow without a graphics card); screenshots in screenshots/
 npm run serve          # http://localhost:8080/
 ```
@@ -68,8 +79,9 @@ npm run serve          # http://localhost:8080/
    day and evening, controls for keyboard and mouse, phone and game controller.
 2. Done (0.2): her home, her bicycle, autorickshaw rides (stand or waved down, a list of places), traffic (autos,
    scooters, motorbikes, cars, the town bus, a lorry; bumps only push), real sounds, her new head (no "balloon").
-3. Jobs from people with a marker above their head (deliveries, races, lost things, passengers), a small map, saved
-   progress; finished jobs open new areas.
+3. Done (0.3): no real photos (made-up faces for all), Atyb, Aydin and Aiza, her home like the photo, 15 jobs and
+   everyday ones (deliveries, races, lost things, a passenger, catch, an escort), coins and shops, ride fares, the small
+   and big map, Malayalam bubbles, the jasmine garland, saved progress.
 4. The rest of the town: paddy fields, the backwater with a boat, the temple and the beach. Then 1.0.
 
 ## Releasing

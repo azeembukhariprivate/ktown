@@ -6,6 +6,9 @@ three.js 0.186.0 (vendor/three/three.js, with its GLTFLoader and BufferGeometryU
 Fredoka font (assets/fonts/Fredoka.ttf)
   Copyright 2016 The Fredoka Project Authors. SIL Open Font License, Version 1.1 (assets/fonts/OFL.txt).
 
+Noto Sans Malayalam font (assets/fonts/NotoSansMalayalam.woff2)
+  Copyright 2022 The Noto Project Authors. SIL Open Font License, Version 1.1 (assets/fonts/NotoSansMalayalam-OFL.txt).
+
 Textures, skies and models from Poly Haven (https://polyhaven.com), all CC0 (public domain): free to use for anything.
 Each file's source and SHA-256 is in assets/SOURCES.json. They were made smaller for the game (tools/prepare_assets.py).
 
@@ -169,5 +172,5 @@ Sunday in the city street noise1.ogg, by cori (Public domain): https://commons.w
 USSR bicycle 2T engine D-4.wav, by Віктор Ходєєв /Viktor Khodyeyev (Public domain): https://commons.wikimedia.org/wiki/File%3AUSSR_bicycle_2T_engine_D-4.wav
   assets/sounds/engine-small.mp3
 
-Inaara's face pictures (assets/faces) are from her own picture sheet, shared by her parent for this game.
-Everything else (the houses, shops, palms, vehicles, people and Inaara's body) is made by the game's own code.
+Everything else (the houses, shops, palms, vehicles, the people and the four children with their made-up faces)
+is made by the game's own code.

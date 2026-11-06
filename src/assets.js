@@ -7,14 +7,12 @@ export const MODELS = ['bananas', 'brass_pot_01', 'ceramic_pot', 'fern_02', 'foo
   'yellow_onion', 'sweet_potato', 'metal_trash_can', 'old_tyre', 'painted_wooden_bench', 'planter_pot_clay',
   'plastic_crate_01', 'plastic_jerrycan', 'plastic_monobloc_chair_01', 'potted_plant_02', 'utility_box_01',
   'wicker_basket_01', 'wooden_crate_01', 'grass_medium_01'];
-export const FACES = ['happy', 'excited', 'playful', 'shy', 'surprised'];
 
 export class Assets {
   constructor(renderer, onProgress = () => {}) {
     this.renderer = renderer;
     this.maps = {}; // name -> { color, normal, arm }
     this.models = {};
-    this.faces = {};
     this.sky = {};
     this.onProgress = onProgress;
     this.done = 0;
@@ -51,11 +49,6 @@ export class Assets {
         t.wrapS = THREE.RepeatWrapping;
         t.wrapT = THREE.ClampToEdgeWrapping;
         this.sky[name] = t;
-      }));
-    for (const f of FACES)
-      jobs.push(this.texture(`assets/faces/head-${f}.png`).then(t => {
-        t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping;
-        this.faces[f] = t;
       }));
     const gltf = new THREE.GLTFLoader();
     for (const m of MODELS)

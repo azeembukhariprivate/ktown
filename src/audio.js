@@ -132,6 +132,24 @@ export class TownAudio {
     else this.play(n, { volume: v, rate: 1 + Math.random() * 0.1 });
   }
 
+  /** The tune horn from the Hardware shop: a cheerful little "pa-pa-paa-pa" played on two notes at once. */
+  tune() {
+    if (!this.ready) return;
+    const c = this.ctx, t0 = c.currentTime;
+    const notes = [[659, 0, 0.14], [784, 0.16, 0.14], [880, 0.32, 0.26], [784, 0.62, 0.3]];
+    for (const [f, at, len] of notes) for (const mult of [1, 1.5]) {
+      const o = c.createOscillator(), gn = c.createGain();
+      o.type = 'square';
+      o.frequency.value = f * mult;
+      gn.gain.setValueAtTime(0, t0 + at);
+      gn.gain.linearRampToValueAtTime(mult === 1 ? 0.08 : 0.04, t0 + at + 0.02);
+      gn.gain.setTargetAtTime(0, t0 + at + len, 0.03);
+      o.connect(gn).connect(this.master);
+      o.start(t0 + at);
+      o.stop(t0 + at + len + 0.2);
+    }
+  }
+
   horn(v) {
     this.play('horn', { at: { x: v.x, y: 1, z: v.z }, volume: 0.9, rate: HORN_PITCH[v.kind] || 1 });
   }

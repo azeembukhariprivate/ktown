@@ -4,11 +4,15 @@ import * as THREE from '../vendor/three/three.js';
 import { buildTown, BOUND, inside, groundAt } from './layout.js';
 import { World, Walker, Bike, cameraReach } from './move.js';
 import { buildTown3D } from './town3d.js';
-import { Hero } from './hero.js';
+import { Child } from './children.js';
 import { People } from './people.js';
 import { Sky } from './sky.js';
 import { Traffic, trafficMix } from './traffic.js';
 import { makeAuto, makeTwoWheeler, makeCar, makeBus, makeLorry, Bicycle, vehicleGlow } from './vehicles.js';
+import { JobPlay } from './jobplay.js';
+import { ITEMS, SNACK_SECONDS } from './jobs.js';
+import { LINES } from './lines.js';
+import { instances } from './build.js';
 
 export const CAMERA = { dist: 4.4, min: 2.2, max: 9, pitch: 0.28, height: 0.95 };
 
@@ -26,7 +30,7 @@ export class Game {
     this.roofs = new World(this.plan.camera);
     this.town = buildTown3D(this.plan, assets, this.scene, { quality });
     this.sky = new Sky(renderer, this.scene, assets, { shadowSize: quality === 'low' ? 1024 : 2048 });
-    this.hero = new Hero(assets);
+    this.hero = new Child('inaara');
     this.scene.add(this.hero.root);
     this.walker = new Walker(this.plan.start.x, this.plan.start.z, this.plan.start.heading);
     this.people = new People(this.plan, this.world, this.scene);
@@ -61,6 +65,16 @@ export class Game {
     this.prompt = null;
     this.t = 0;
     this.stepCount = 0;
+    this.onCoins = () => {};
+    this.onJob = () => {};
+    this.onFinale = () => {};
+    this.onSave = () => {};
+    this.onShop = () => {};
+    // The jobs, coins and everything she has: saved in the browser.
+    this.jobs = new JobPlay(this, save.progress);
+    const kept = this.jobs.progress.p.bike;
+    if (kept && !this.world.blocked(kept.x, kept.z, 0.36, 0.22)) Object.assign(this.bike, { x: kept.x, z: kept.z, heading: kept.heading });
+    this.titlePose();
     this.updateWorldDynamic();
     this.placeBike();
     this.hero.update(0, this.walker);
@@ -105,7 +119,10 @@ export class Game {
       if (this.mode === 'foot') for (let i = 0; i < steps; i++) this.walker.update(dt / steps, this.world, move, m.run, ctl.jump && i === 0);
       else if (this.mode === 'bike') for (let i = 0; i < steps; i++) this.bike.update(dt / steps, this.world, move, m.run);
       if (ctl.action) this.action();
-      if (ctl.bell && this.mode === 'bike' && this.audio) this.audio.play('bell');
+      if (ctl.bell && this.mode === 'bike' && this.audio) {
+        if (this.jobs.progress.owns('horn')) this.audio.tune();
+        else this.audio.play('bell');
+      }
       // When she moves and the camera hasn't been turned by hand for a moment, it swings round behind her.
       const sinceLook = (performance.now() - this.input.lastLook) / 1000;
       const her = this.her;
@@ -116,19 +133,23 @@ export class Game {
       }
       this.checkArea();
     } else if (this.screen === 'title') {
-      // A slow look round behind the title.
-      this.yaw += dt * 0.06;
+      // The four friends at her gate, the camera in front of them, swaying gently.
+      this.yaw = this.her.heading + 0.35 + Math.sin(this.t * 0.25) * 0.18;
+      this.pitch = 0.1;
+      this.dist = 4.6;
     }
     const still = this.screen === 'paused' ? 0 : dt;
     const her = this.her;
     // The traffic, stopping for people and for her (on foot or on her bicycle).
     const others = this.people.list.map(p => ({ x: p.x, z: p.z, r: 0.3 }));
+    for (const k of Object.values(this.jobs.kids)) others.push({ x: k.x, z: k.z, r: k.racing ? 0.45 : 0.25 });
     if (this.mode !== 'auto') others.push({ x: her.x, z: her.z, r: this.mode === 'bike' ? 0.45 : 0.3, her: true });
     if (still) this.traffic.update(still, others);
     this.trafficEvents();
     this.syncVehicles();
     this.updateWorldDynamic();
     const near = this.people.update(still, { x: her.x, z: her.z });
+    if (this.screen !== 'paused') this.jobs.update(still);
     this.poseHero(still, near);
     this.placeBike();
     if (playing) this.updatePrompt();
@@ -182,7 +203,7 @@ export class Game {
 
   /** Everything that moves and that she can bump into: people, vehicles, her parked bicycle. */
   updateWorldDynamic() {
-    const list = [...this.people.solids, ...this.vehicleSolids];
+    const list = [...this.people.solids, ...this.vehicleSolids, ...this.jobs.solids];
     if (this.mode !== 'bike') {
       const b = this.bike, dx = Math.sin(b.heading) * 0.3, dz = Math.cos(b.heading) * 0.3;
       Object.assign(this.bikeSolid[0], { x: b.x + dx, z: b.z + dz });
@@ -212,10 +233,13 @@ export class Game {
   trafficEvents() {
     for (const e of this.traffic.events) {
       if (e.type === 'horn' && this.audio) this.audio.horn(e.vehicle);
+      if (e.type === 'horn') this.jobs.driverCalls(e.vehicle);
       if (e.type === 'arrived' && e.vehicle === this.ride && this.mode === 'auto') {
-        const name = e.vehicle.place ? e.vehicle.place.name : '';
+        const place = e.vehicle.place, name = place ? place.name : '';
+        this.jobs.say(() => ({ x: e.vehicle.x, y: 2.1, z: e.vehicle.z }), LINES.ride.here, 3);
         this.leaveAuto();
         if (name) this.onToast('Here we are: ' + name);
+        this.jobs.rideArrived(place);
       }
     }
     // A hailed autorickshaw opens the list of places once it has stopped beside her.
@@ -233,9 +257,14 @@ export class Game {
   updatePrompt() {
     let p = null;
     const her = this.her;
-    if (this.mode === 'bike') p = { text: 'Get off the bicycle', act: () => this.getOffBike() };
+    if (this.mode === 'bike' && !this.jobs.prompt()) p = { text: 'Get off the bicycle', act: () => this.getOffBike() };
     else if (this.mode === 'auto') p = this.ride.mode === 'stopping' ? null : { text: 'Get off here', act: () => { this.ride.mode = 'stopping'; } };
-    else if (!this.menuOpen) {
+    const jobPrompt = this.mode !== 'auto' && !this.menuOpen ? this.jobs.prompt() : null;
+    if (jobPrompt) p = jobPrompt;
+    else if (this.mode === 'foot' && !this.menuOpen && this.nearShop()) {
+      const shop = this.nearShop();
+      p = { text: 'Look in ' + (shop.name === 'Tea Shop' ? 'the tea shop' : shop.name), act: () => this.openShop(shop) };
+    } else if (!this.menuOpen && this.mode === 'foot') {
       const b = this.bike;
       const nearAuto = this.traffic.vehicles
         .filter(v => v.kind === 'auto' && (v.mode === 'parked' || v.mode === 'drive' || v.mode === 'hailed'))
@@ -280,22 +309,160 @@ export class Game {
 
   openPlaces() {
     this.menuOpen = true;
-    this.onMenu(this.plan.places.filter(p => Math.hypot(p.x - this.ride.x, p.z - this.ride.z) > 15), place => {
+    const v = this.ride;
+    let list = this.plan.places.filter(p => Math.hypot(p.x - v.x, p.z - v.z) > 15);
+    list = this.jobs.ridePlaces(list).map(p => {
+      const cost = this.jobs.rideCost(Math.hypot(p.x - v.x, p.z - v.z), p);
+      return { ...p, cost };
+    });
+    this.jobs.say(() => ({ x: v.x, y: 2.1, z: v.z }), LINES.ride.where, 3);
+    this.onMenu(list, place => {
       this.menuOpen = false;
       if (!place) {
         if (this.ride && this.ride.mode === 'hailed') this.ride.mode = 'drive';
         this.ride = null;
         return;
       }
+      if (!place.cost) place.cost = this.jobs.rideCost(Math.hypot(place.x - v.x, place.z - v.z), place);
+      if (!place.cost.ok) {
+        this.jobs.say(() => ({ x: v.x, y: 2.1, z: v.z }), LINES.ride.short, 3);
+        this.onToast('Not enough coins for that ride. Home is always free!');
+        if (this.ride && this.ride.mode === 'hailed') this.ride.mode = 'drive';
+        this.ride = null;
+        return;
+      }
       if (this.traffic.hire(this.ride, place)) {
+        this.jobs.progress.spend(place.cost.pay);
+        this.onCoins(this.jobs.progress.coins, -place.cost.pay);
         this.mode = 'auto';
-        this.onToast('To ' + place.name + '!');
-        if (this.audio) this.audio.play('horn-auto', { at: this.ride, volume: 0.5 });
+        if (place.cost.free) this.jobs.say(() => ({ x: v.x, y: 2.1, z: v.z }), LINES.ride.free, 4);
+        else this.jobs.say(() => ({ x: v.x, y: 2.1, z: v.z }), LINES.ride.hop, 2.5);
+        this.onToast('To ' + place.name + (place.cost.pay ? ` (${place.cost.pay} coins)` : place.cost.aunty ? ' (Mariyamma aunty pays)' : ' (free)'));
+        if (this.audio) this.audio.play('horn', { at: this.ride, volume: 0.4, rate: 1.45 });
+        this.jobs.save();
       } else {
         this.onToast('The driver doesn\'t know the way there');
         this.ride = null;
       }
     });
+  }
+
+  // ---------- Shops ----------
+
+  /** The shops she can look in: each open shop with things to buy, and the tea shop. */
+  shopSpots() {
+    if (!this._shops) {
+      const names = new Set(ITEMS.map(i => i.shop));
+      this._shops = this.plan.shops.filter(s => s.open && names.has(s.name))
+        .map(s => ({ name: s.name, x: s.x, z: s.z + (s.facing === 'south' ? 1.6 : -1.6) }));
+      this._shops.push({ name: 'Tea Shop', x: 35, z: -9.6 });
+    }
+    return this._shops;
+  }
+
+  nearShop() {
+    const her = this.her;
+    return this.shopSpots().find(s => Math.hypot(s.x - her.x, s.z - her.z) < 2.2) || null;
+  }
+
+  openShop(shop) {
+    this.menuOpen = true;
+    this.onShop(shop, ITEMS.filter(i => i.shop === shop.name), () => { this.menuOpen = false; });
+  }
+
+  /** Buys something; returns what happened, for the shop's list. */
+  buy(item) {
+    const pr = this.jobs.progress;
+    if (!pr.buy(item)) return pr.owns(item.id) ? 'owned' : 'short';
+    const forAiza = this.jobs.active && this.jobs.active.job.kind === 'buy' && (item.id === this.jobs.active.job.item || item.same === this.jobs.active.job.item);
+    if (item.kind === 'snack' && !forAiza) {
+      this.jobs.snack = SNACK_SECONDS;
+      this.onToast('Yum! She runs and pedals a little faster for a minute.');
+    }
+    if (item.kind === 'bike') this.bicycle.setColour(item.value);
+    if (item.kind === 'basket') this.bicycle.bigBasket(true);
+    if (item.kind === 'wear') this.hero.wear(pr.p.wearing);
+    if (item.kind === 'yard') this.setYard({ pots: pr.owns('pots'), swing: pr.owns('swing') });
+    this.jobs.bought(item);
+    this.onCoins(pr.coins, -item.price);
+    this.jobs.save();
+    return 'bought';
+  }
+
+  /** Puts on or takes off something she owns (or chooses a bicycle colour she owns). */
+  choose(item) {
+    const pr = this.jobs.progress;
+    if (!pr.owns(item.id)) return;
+    if (item.kind === 'wear') {
+      const w = pr.p.wearing;
+      if (w.includes(item.id)) w.splice(w.indexOf(item.id), 1);
+      else w.push(item.id);
+      this.hero.wear(w);
+    }
+    if (item.kind === 'bike') {
+      pr.p.bikeColour = item.value;
+      this.bicycle.setColour(item.value);
+    }
+    this.jobs.save();
+  }
+
+  /** Flower pots and a swing in her yard (when bought). */
+  setYard({ pots, swing }) {
+    const h = this.plan.home;
+    if (!this.yard) this.yard = {};
+    if (pots && !this.yard.pots) {
+      const [x, z] = h.yardSpots[0];
+      const g = new THREE.Group();
+      const list = [0, 1, 2, 3].map(i => ({ x: x + (i - 1.5) * 0.7, z, rot: i }));
+      instances(this.assets.models.potted_plant_02, list, g);
+      this.scene.add(g);
+      this.yard.pots = g;
+    }
+    if (swing && !this.yard.swing) {
+      const [x, z] = h.yardSpots[1];
+      const g = new THREE.Group();
+      const wood = new THREE.MeshStandardMaterial({ color: '#7a4a2a', roughness: 0.8 });
+      const rope = new THREE.MeshStandardMaterial({ color: '#d7c9a7', roughness: 0.9 });
+      for (const s of [-1, 1]) {
+        const post = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.07, 2.2, 8), wood);
+        post.position.set(s * 0.9, 1.1, 0);
+        g.add(post);
+        const r = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 1.5, 6), rope);
+        r.position.set(s * 0.35, 1.35, 0);
+        g.add(r);
+      }
+      const beam = new THREE.Mesh(new THREE.BoxGeometry(2, 0.1, 0.1), wood);
+      beam.position.y = 2.15;
+      const seat = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.05, 0.3), wood);
+      seat.position.y = 0.6;
+      g.add(beam, seat);
+      g.position.set(x, 0, z);
+      g.rotation.y = Math.PI / 2;
+      g.traverse(o => { if (o.isMesh) o.castShadow = true; });
+      this.scene.add(g);
+      this.yard.swing = g;
+    }
+  }
+
+  saveProgress(p) {
+    this.save.progress = p;
+    this.onSave();
+  }
+
+  /** On the title screen: the four friends standing together at her gate, looking at you. */
+  titlePose() {
+    const s = this.her, h = s.heading, rx = Math.cos(h), rz = -Math.sin(h);
+    const spots = { atyb: -1.25, aiza: 0.75, aydin: 1.45 };
+    for (const [who, off] of Object.entries(spots)) {
+      const k = this.jobs.kids[who];
+      Object.assign(k, { x: s.x + rx * off + Math.sin(h) * 0.3, z: s.z + rz * off + Math.cos(h) * 0.3, heading: h, target: null });
+    }
+    this.titleCentre = { x: s.x + rx * 0.1, z: s.z + rz * 0.1 };
+  }
+
+  /** Leaving the title: her friends go back across the lane. */
+  leaveTitle() {
+    for (const k of Object.values(this.jobs.kids)) Object.assign(k, { x: k.home.x, z: k.home.z, heading: k.home.heading, target: null });
   }
 
   leaveAuto() {
@@ -333,7 +500,7 @@ export class Game {
   }
 
   placeCamera(dt, snap = false) {
-    const her = this.her;
+    const her = this.screen === 'title' && this.titleCentre ? { ...this.her, ...this.titleCentre } : this.her;
     const h = this.mode === 'auto' ? 1.35 : this.mode === 'bike' ? 1.15 : CAMERA.height;
     const target = new THREE.Vector3(her.x, her.y + h, her.z);
     const cp = Math.cos(this.pitch);

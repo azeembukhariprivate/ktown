@@ -32,15 +32,32 @@ const PARTS = {
     return THREE.BufferGeometryUtils.mergeGeometries([a, b]);
   },
   moustache: () => new THREE.BoxGeometry(0.075, 0.016, 0.02).translate(0, -0.035, 0.098),
+  // A made-up face like the children's: eyebrows and a smiling mouth.
+  brows: () => THREE.BufferGeometryUtils.mergeGeometries([
+    new THREE.BoxGeometry(0.034, 0.008, 0.01).translate(-0.036, 0.045, 0.096),
+    new THREE.BoxGeometry(0.034, 0.008, 0.01).translate(0.036, 0.045, 0.096)
+  ]),
+  mouth: () => new THREE.TorusGeometry(0.018, 0.0045, 4, 10, Math.PI).rotateZ(Math.PI).translate(0, -0.052, 0.094),
   drape: () => new THREE.BoxGeometry(0.42, 0.62, 0.03).translate(0, 0.27, 0.12)
 };
 
+// The people who give jobs: who they are (a woman or a man, older or not).
+const WHO = {
+  velu: { woman: false, old: false }, kunjamma: { woman: true, old: true }, mariyamma: { woman: true, old: true },
+  gopalan: { woman: false, old: true }, lakshmi: { woman: true, old: false }, sarada: { woman: true, old: false },
+  leela: { woman: true, old: false }, bookstall: { woman: false, old: true }
+};
+
 /** Makes up a person: what they wear and look like. `kind` is how they spend their time. */
-function makeLook(r, kind) {
+function makeLook(r, kind, who = null) {
   const pick = a => a[(r() * a.length) | 0];
-  const child = kind !== 'seller' && kind !== 'shopkeeper' && r() < 0.14;
-  const woman = r() < 0.48;
-  const old = !child && r() < 0.2;
+  const child = !who && kind !== 'seller' && kind !== 'shopkeeper' && r() < 0.14;
+  let woman = r() < 0.48;
+  let old = !child && r() < 0.2;
+  if (who) {
+    woman = who.woman;
+    old = who.old;
+  }
   const look = {
     scale: child ? 0.68 + r() * 0.08 : (woman ? 0.93 : 1) * (0.95 + r() * 0.08),
     skin: pick(SKIN), hair: old ? pick(HAIR.slice(4)) : pick(HAIR.slice(0, 4)),
@@ -95,7 +112,7 @@ export class People {
     }
     for (const it of T.idlers) {
       this.list.push({
-        look: makeLook(r, it.kind), x: it.x, z: it.z, y: it.y || 0, heading: it.heading, phase: r() * 6, kind: it.kind, seat: it.kind === 'sitting',
+        look: makeLook(r, it.kind, WHO[it.id]), id: it.id, name: it.name, x: it.x, z: it.z, y: it.y || 0, heading: it.heading, phase: r() * 6, kind: it.kind, seat: it.kind === 'sitting',
         turn: r() * 6
       });
     }
@@ -108,7 +125,7 @@ export class People {
     const n = this.list.length;
     for (const [name, make] of Object.entries(PARTS)) {
       const im = new THREE.InstancedMesh(make(), mat, n);
-      im.castShadow = name !== 'eyes' && name !== 'moustache';
+      im.castShadow = !['eyes', 'moustache', 'brows', 'mouth'].includes(name);
       im.receiveShadow = true;
       im.frustumCulled = false;
       im.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
@@ -117,7 +134,8 @@ export class People {
         const L = p.look;
         const c = {
           legL: L.legs, legR: L.legs, lower: L.lower || L.legs, torso: L.shirt, shoulders: L.shirt, sleeveL: L.sleeves, sleeveR: L.sleeves,
-          armL: L.skin, armR: L.skin, neck: L.skin, head: L.skin, hair: L.hair, bun: L.hair, eyes: '#120e0c', moustache: L.hair, drape: L.drape || L.shirt
+          armL: L.skin, armR: L.skin, neck: L.skin, head: L.skin, hair: L.hair, bun: L.hair, eyes: '#120e0c', moustache: L.hair, drape: L.drape || L.shirt,
+          brows: L.hair === '#d8d4cc' ? '#8f8a84' : '#1a1412', mouth: '#6e2a20'
         }[name];
         im.setColorAt(i, col.set(c));
       });
@@ -149,6 +167,14 @@ export class People {
     this.list.forEach((p, i) => {
       const dx = hero.x - p.x, dz = hero.z - p.z, dist = Math.hypot(dx, dz);
       if (dist < 2.2) near = true;
+      if (p.controlled) {
+        // Moved by a job (walking with Inaara, riding along, gathering for her garland).
+        const s = this.solids[i];
+        s.x = p.x;
+        s.z = p.z;
+        this.pose(p, i);
+        return;
+      }
       p.moving = false;
       if (p.route) {
         // Stop when she's just ahead; now and then stop for a moment anyway.
@@ -222,6 +248,8 @@ export class People {
     set('hair', 0, top + 0.77, 0);
     set('bun', 0, top + 0.77, 0, 0, L.bun ? 1 : 0, L.bun ? 1 : 0, L.bun ? 1 : 0);
     set('eyes', 0, top + 0.77, 0);
+    set('brows', 0, top + 0.77, 0);
+    set('mouth', 0, top + 0.77, 0, 0, L.moustache ? 0 : 1, L.moustache ? 0 : 1, L.moustache ? 0 : 1);
     set('moustache', 0, top + 0.77, 0, 0, L.moustache ? 1 : 0, L.moustache ? 1 : 0, L.moustache ? 1 : 0);
     set('drape', 0, top, 0, 0.05, L.drape ? 1 : 0, L.drape ? 1 : 0, L.drape ? 1 : 0, L.drape ? -0.5 : 0);
     const armRest = p.seat ? -0.5 : p.kind === 'seller' || p.kind === 'shopkeeper' ? -0.25 : 0;

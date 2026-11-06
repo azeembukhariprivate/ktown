@@ -243,11 +243,12 @@ export function vehicleGlow() {
  * into turns.
  */
 export class Bicycle {
-  constructor() {
+  constructor(colour = '#e85d8f') {
     this.root = new THREE.Group();
     this.frame = new THREE.Group();
     this.root.add(this.frame);
-    const pink = mat('#e85d8f', { rough: 0.35, metal: 0.3 });
+    // Its own paint (not shared), so it can be repainted.
+    const pink = this.paint = new THREE.MeshStandardMaterial({ color: colour, roughness: 0.35, metalness: 0.3 });
     const B = new Batcher();
     const tube = (a, b, r = 0.022, m = pink) => {
       const d = new THREE.Vector3(...b).sub(new THREE.Vector3(...a));
@@ -300,9 +301,26 @@ export class Bicycle {
     this.frame.add(this.pedals);
     finish(this.root);
     this.root.traverse(o => (o.matrixAutoUpdate = true));
+    this.basket = this.frame.children.find(o => o.isMesh && o.material.color && o.material.color.getHexString() === 'c9a066') || null;
     this.marker = makeMarker();
     this.root.add(this.marker);
     this.seatHeight = 0.66;
+  }
+
+  setColour(c) {
+    this.paint.color.set(c);
+  }
+
+  /** A bigger basket in front (bought at the Hardware shop). */
+  bigBasket(on) {
+    if (this.basket) this.basket.visible = !on;
+    if (on && !this.big) {
+      this.big = new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.22, 0.28), new THREE.MeshStandardMaterial({ color: '#b98b52', roughness: 0.85 }));
+      this.big.position.set(0, 0.75, 0.47);
+      this.big.castShadow = true;
+      this.frame.add(this.big);
+    }
+    if (this.big) this.big.visible = on;
   }
 
   /** Puts the bicycle at (x, y, z) facing `heading`, its wheels turned `roll` (radians) and leaning `lean`. */

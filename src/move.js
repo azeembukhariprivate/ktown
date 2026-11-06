@@ -133,7 +133,7 @@ export class Walker {
    */
   update(dt, world, move, run = false, jump = false) {
     const len = Math.min(1, Math.hypot(move.x, move.z));
-    const speed = (run && len > 0.5 ? MOVE.run : MOVE.walk) * len;
+    const speed = (run && len > 0.5 ? MOVE.run : MOVE.walk) * len * (this.boost || 1);
     const tx = len > 0 ? (move.x / Math.hypot(move.x, move.z)) * speed : 0;
     const tz = len > 0 ? (move.z / Math.hypot(move.x, move.z)) * speed : 0;
     const a = Math.min(1, MOVE.accel * dt * (this.onGround ? 1 : 0.35));
@@ -237,7 +237,7 @@ export class Bike {
       d = Math.atan2(Math.sin(d), Math.cos(d));
       if (Math.abs(d) > 2.3 && this.speed > 0.5) target = 0; // asked to go back the other way: brake first
       else {
-        target = (fast ? BIKE.fast : BIKE.slow) * len * (1 - Math.min(0.6, Math.abs(d) / 3));
+        target = (fast ? BIKE.fast : BIKE.slow) * len * (1 - Math.min(0.6, Math.abs(d) / 3)) * (this.boost || 1);
         const rate = BIKE.turn * Math.min(1, 0.35 + this.speed / 3);
         steer = Math.max(-rate, Math.min(rate, d * 3));
       }

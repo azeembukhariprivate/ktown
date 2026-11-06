@@ -1,18 +1,12 @@
 // Keeps the game on the device so it opens without the internet after the first visit.
 // It answers from the saved copy straight away and fetches any newer copy for next time.
 // The list of files is written by tools/list_files.mjs.
-const VERSION = '0.2.0';
+const VERSION = '0.3.0';
 const CACHE = 'ktown-' + VERSION;
 const FILES = [
   './',
-  'assets/faces/full-front.png',
-  'assets/faces/head-excited.png',
-  'assets/faces/head-happy.png',
-  'assets/faces/head-playful.png',
-  'assets/faces/head-shy.png',
-  'assets/faces/head-surprised.png',
-  'assets/faces/portrait.png',
   'assets/fonts/Fredoka.ttf',
+  'assets/fonts/NotoSansMalayalam.woff2',
   'assets/icons/apple-touch-icon.png',
   'assets/icons/icon-192.png',
   'assets/icons/icon-512.png',
@@ -117,11 +111,15 @@ const FILES = [
   'src/assets.js',
   'src/audio.js',
   'src/build.js',
+  'src/children.js',
   'src/game.js',
-  'src/hero.js',
   'src/input.js',
+  'src/jobplay.js',
+  'src/jobs.js',
   'src/layout.js',
+  'src/lines.js',
   'src/main.js',
+  'src/map.js',
   'src/move.js',
   'src/people.js',
   'src/plants.js',
