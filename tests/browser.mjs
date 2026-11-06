@@ -204,16 +204,18 @@ try {
     await promptIs('Ready, steady');
     await pc.keyboard.press('KeyE');
     await pc.waitForFunction(() => ktown.game.jobs.active.stage === 'go', null, { timeout: 120000 });
-    await shot(pc, '16-race');
     const a = await coins();
-    // Ride the course (moved along it, as drawing is too slow here to pedal it).
-    const pts = await pc.evaluate(() => ktown.game.jobs.P.races[0].pts);
-    for (const [x, z] of pts.slice(1)) {
-      await pc.evaluate(([x, z]) => { const b = ktown.game.bike; b.x = x; b.z = z; }, [x, z]);
-      await wait(300);
+    // Ride the course, checkpoint by checkpoint (moved along it, as drawing here is too slow to pedal it in time).
+    const n = await pc.evaluate(() => ktown.game.jobs.P.races[0].pts.length);
+    for (let i = 1; i < n; i++) {
+      await pc.evaluate(i => { const g = ktown.game, [x, z] = g.jobs.P.races[0].pts[i]; g.bike.x = x; g.bike.z = z; }, i);
+      await pc.waitForFunction(i => !ktown.game.jobs.active || ktown.game.jobs.active.next > i, i, { timeout: 60000, polling: 50 });
     }
     await pc.waitForFunction(() => !ktown.game.jobs.active, null, { timeout: 60000 });
-    assert.ok(await coins() >= a + 25, 'won the race');
+    assert.ok(await pc.evaluate(() => ktown.game.jobs.progress.p.done.includes('race1')), 'won the race');
+    assert.ok(await coins() >= a + 25, 'paid for winning');
+    await wait(1000);
+    await shot(pc, '16-race');
     await pc.keyboard.press('KeyE');
   });
 
